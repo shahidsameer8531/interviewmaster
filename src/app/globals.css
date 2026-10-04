@@ -17,6 +17,45 @@
     --gold: #fcba28;
     --gold-soft: #fcd978;
 
+    /* Prep Room (signed-in app) tokens. Quieter and denser than the
+       marketing palette. Exposed in Tailwind under the `app` colour key. */
+    --app-bg: #070c1c;
+    --app-sidebar: #0a1124;
+    --app-card: #0c152e;
+    --app-raised: #101b3a;
+    --app-hover: #16223f;
+    --app-line: #1b2645;
+    --app-line-strong: #2a3963;
+    --app-ink-1: #eceff7;
+    --app-ink-2: #a9b2cc;
+    --app-ink-3: #7a85a6;
+    --app-gold: #fcba28;
+    --app-gold-hover: #ffd066;
+    --app-sky: #7cc4ff;
+    --app-sky-text: #a9dbff;
+    --app-orange: #fb923c;
+    --app-orange-text: #fdba8c;
+    --app-rec: #f87171;
+
+    /* RGB channels of the same tokens so Tailwind opacity modifiers work (bg-app-sky/10). */
+    --app-bg-rgb: 7 12 28;
+    --app-sidebar-rgb: 10 17 36;
+    --app-card-rgb: 12 21 46;
+    --app-raised-rgb: 16 27 58;
+    --app-hover-rgb: 22 34 63;
+    --app-line-rgb: 27 38 69;
+    --app-line-strong-rgb: 42 57 99;
+    --app-ink-1-rgb: 236 239 247;
+    --app-ink-2-rgb: 169 178 204;
+    --app-ink-3-rgb: 122 133 166;
+    --app-gold-rgb: 252 186 40;
+    --app-gold-hover-rgb: 255 208 102;
+    --app-sky-rgb: 124 196 255;
+    --app-sky-text-rgb: 169 219 255;
+    --app-orange-rgb: 251 146 60;
+    --app-orange-text-rgb: 253 186 140;
+    --app-rec-rgb: 248 113 113;
+
     --background: 216 60% 10%;
     --foreground: 220 55% 96%;
     --card: 218 59% 14%;
@@ -181,6 +220,80 @@
 
   @keyframes caret-blink {
     to { visibility: hidden; }
+  }
+}
+
+/* ------------------------------------------------------------------
+   Prep Room app shell. The shell is a wrapping flex row, so the sidebar
+   stacks above the content on narrow screens without media queries. The
+   container query only relaxes the sidebar's sticky positioning once it
+   has wrapped, so it never pins a full-height panel over phone content.
+------------------------------------------------------------------- */
+[data-app-root] {
+  background: var(--app-bg);
+  color: var(--app-ink-1);
+  container-type: inline-size;
+  container-name: app-shell;
+}
+[data-app-root] :focus-visible {
+  outline: 2px solid var(--app-gold-hover);
+  outline-offset: 2px;
+}
+.app-sidebar {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  max-height: 100vh;
+  max-height: 100dvh;
+  overflow-y: auto;
+}
+/* Stacked (phone) layout: the logo and the user menu share the top row, the
+   navigation wraps underneath, and the target card is hidden. The user row
+   stays reachable because it holds the only sign-out control. */
+@container app-shell (max-width: 819px) {
+  .app-sidebar {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .app-sidebar [data-sidebar-brand] {
+    order: 1;
+    flex: 1 1 auto;
+  }
+  .app-sidebar [data-sidebar-user] {
+    order: 2;
+    flex: 0 0 auto;
+    border-top: 0;
+    padding-top: 0;
+  }
+  .app-sidebar [data-sidebar-user] [data-user-text] {
+    display: none;
+  }
+  .app-sidebar [data-sidebar-nav] {
+    order: 3;
+    flex: 1 1 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .app-sidebar [data-sidebar-nav] > div {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .app-sidebar [data-sidebar-group-label] {
+    display: none;
+  }
+  .app-sidebar [data-sidebar-target] {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-app-root] * {
+    animation: none !important;
   }
 }
 

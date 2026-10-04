@@ -1,5 +1,5 @@
 // import { NextResponse } from 'next/server';
-// import { generateTest } from '@/app/products/Practice-Tests/services/aiTestGenerator';
+// import { generateTest } from '@/app/(marketing)/products/Practice-Tests/services/aiTestGenerator';
 
 // export async function POST(req: Request) {
 //   try {

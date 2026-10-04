@@ -81,6 +81,37 @@ const config: Config = {
                     green: "#2dd4a4",
                     blue: "#3d6ab0",
                 },
+                // Prep Room (signed-in app). Values live in globals.css as
+                // --app-* variables; referencing them here keeps one source
+                // and stops addVariablesForColors from re-emitting them.
+                app: {
+                    bg: "rgb(var(--app-bg-rgb) / <alpha-value>)",
+                    sidebar: "rgb(var(--app-sidebar-rgb) / <alpha-value>)",
+                    card: "rgb(var(--app-card-rgb) / <alpha-value>)",
+                    raised: "rgb(var(--app-raised-rgb) / <alpha-value>)",
+                    hover: "rgb(var(--app-hover-rgb) / <alpha-value>)",
+                    line: "rgb(var(--app-line-rgb) / <alpha-value>)",
+                    "line-strong": "rgb(var(--app-line-strong-rgb) / <alpha-value>)",
+                    "ink-1": "rgb(var(--app-ink-1-rgb) / <alpha-value>)",
+                    "ink-2": "rgb(var(--app-ink-2-rgb) / <alpha-value>)",
+                    "ink-3": "rgb(var(--app-ink-3-rgb) / <alpha-value>)",
+                    gold: "rgb(var(--app-gold-rgb) / <alpha-value>)",
+                    "gold-hover": "rgb(var(--app-gold-hover-rgb) / <alpha-value>)",
+                    sky: "rgb(var(--app-sky-rgb) / <alpha-value>)",
+                    "sky-text": "rgb(var(--app-sky-text-rgb) / <alpha-value>)",
+                    orange: "rgb(var(--app-orange-rgb) / <alpha-value>)",
+                    "orange-text": "rgb(var(--app-orange-text-rgb) / <alpha-value>)",
+                    rec: "rgb(var(--app-rec-rgb) / <alpha-value>)",
+                },
+            },
+            fontSize: {
+                "app-title": ["36px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "600" }],
+                "app-question": ["26px", { lineHeight: "1.3", fontWeight: "500" }],
+                "app-section": ["19px", { lineHeight: "1.3", fontWeight: "600" }],
+                "app-body": ["15px", { lineHeight: "1.6" }],
+                "app-ui": ["14px", { lineHeight: "1.4", fontWeight: "600" }],
+                "app-small": ["13px", { lineHeight: "1.5" }],
+                "app-label": ["11px", { lineHeight: "1.4", letterSpacing: "0.14em" }],
             },
             borderRadius: {
                 lg: "var(--radius)",
@@ -88,6 +119,9 @@ const config: Config = {
                 sm: "calc(var(--radius) - 4px)",
                 "2xl": "1.25rem",
                 "3xl": "1.75rem",
+                "app-control": "10px",
+                "app-panel": "12px",
+                "app-card": "16px",
             },
             boxShadow: {
                 glow: "0 0 0 1px rgba(252,186,40,0.25), 0 12px 40px -12px rgba(252,186,40,0.45)",

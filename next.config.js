@@ -12,7 +12,7 @@ module.exports = {
   webpack: (config, { isServer }) => {
     // Add src directory alias for easier imports
     config.resolve.alias['@'] = `${__dirname}/src`;
-    config.resolve.alias['@interview-types'] = `${__dirname}/src/app/products/interview-questions/types.ts`;
+    config.resolve.alias['@interview-types'] = `${__dirname}/src/app/(marketing)/products/interview-questions/types.ts`;
     config.resolve.alias['@components'] = `${__dirname}/src/app/components`;
     config.resolve.alias['@public'] = `${__dirname}/public`;
     config.resolve.alias['@styles'] = `${__dirname}/src/styles`;

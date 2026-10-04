@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "group/btn relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold tracking-tight transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:translate-y-px [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "group/btn relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold tracking-tight transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-app-gold-hover focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:translate-y-px [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -24,6 +24,10 @@ const buttonVariants = cva(
           "text-gold underline-offset-4 hover:underline",
         glass:
           "surface-glass text-foreground hover:border-gold/40 hover:bg-navy-800/80",
+        // App only. Destructive, reversible-with-confirm actions such as
+        // "End interview". Outline in --app-rec tones, never filled.
+        danger:
+          "border border-app-rec/50 bg-transparent text-app-rec hover:border-app-rec hover:bg-app-rec/10",
       },
       size: {
         default: "h-11 px-5",

@@ -29,7 +29,7 @@
         "./src/*"
       ],
       "@interview-types": [
-        "./src/app/products/interview-questions/types.ts"
+        "./src/app/(marketing)/products/interview-questions/types.ts"
       ]
     },
     "skipDefaultLibCheck": true,    // Skip type checking for default library files

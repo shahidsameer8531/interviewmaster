@@ -3,10 +3,17 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { MaxWidthWrapper } from '@/components/MaxWidthWrapper';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 import { FaHome, FaSearch } from 'react-icons/fa';
 
 export default function NotFound() {
+  // Unmatched URLs only ever use the root not-found, which sits outside the
+  // (marketing) route group, so the marketing chrome is rendered here directly.
   return (
+    <>
+    <Header />
+    <main className="pt-[72px]">
     <MaxWidthWrapper>
       <div className="min-h-[80vh] flex flex-col items-center justify-center text-center px-4">
         <motion.div
@@ -39,8 +46,8 @@ export default function NotFound() {
           >
             <h2 className="text-3xl font-semibold text-foreground">Page Not Found</h2>
             <p className="text-lg text-muted-foreground max-w-lg mx-auto">
-              Oops! The page you're looking for seems to have taken a coffee break. 
-              Let's get you back on track.
+              Oops! The page you&apos;re looking for seems to have taken a coffee break. 
+              Let&apos;s get you back on track.
             </p>
           </motion.div>
 
@@ -86,5 +93,8 @@ export default function NotFound() {
         </motion.div>
       </div>
     </MaxWidthWrapper>
+    </main>
+    <Footer />
+    </>
   );
 }

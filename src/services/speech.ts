@@ -6,9 +6,25 @@
  * Everything that touches `window` is deferred until first use so the module
  * can be imported by pages that are rendered on the server.
  */
+/* Minimal shapes for the vendor-prefixed Web Speech API. */
+type SpeechRecognitionEventLike = {
+  resultIndex: number;
+  results: ArrayLike<ArrayLike<{ transcript: string }> & { isFinal: boolean }>;
+};
+type SpeechRecognitionLike = {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onresult: ((event: SpeechRecognitionEventLike) => void) | null;
+  onerror: ((error: unknown) => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+};
+
 class SpeechService {
   private synth: SpeechSynthesis | null = null;
-  private recognition: any = null;
+  private recognition: SpeechRecognitionLike | null = null;
   private initialised = false;
   private isRecognitionActive = false;
   private currentUtterance: SpeechSynthesisUtterance | null = null;
@@ -19,7 +35,8 @@ class SpeechService {
     this.synth = window.speechSynthesis ?? null;
 
     const Recognition =
-      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      (window as unknown as { SpeechRecognition?: new () => SpeechRecognitionLike; webkitSpeechRecognition?: new () => SpeechRecognitionLike }).SpeechRecognition ??
+      (window as unknown as { webkitSpeechRecognition?: new () => SpeechRecognitionLike }).webkitSpeechRecognition;
     if (Recognition) {
       this.recognition = new Recognition();
       this.recognition.continuous = true;
@@ -35,7 +52,7 @@ class SpeechService {
 
   startRecognition(
     onResult: (text: string, isFinal: boolean) => void,
-    onError?: (error: any) => void
+    onError?: (error: unknown) => void
   ) {
     this.ensureInit();
     if (!this.recognition) {
@@ -47,7 +64,7 @@ class SpeechService {
     let finalTranscript = "";
     let interimTranscript = "";
 
-    this.recognition.onresult = (event: any) => {
+    this.recognition.onresult = (event: SpeechRecognitionEventLike) => {
       interimTranscript = "";
       for (let i = event.resultIndex; i < event.results.length; ++i) {
         const transcript = event.results[i][0].transcript;
@@ -61,7 +78,7 @@ class SpeechService {
       }
     };
 
-    this.recognition.onerror = (error: any) => {
+    this.recognition.onerror = (error: unknown) => {
       console.error("Speech recognition error:", error);
       onError?.(error);
     };

@@ -8,12 +8,8 @@ import { ConvexClientProvider } from "@/providers/ConvexAuthProvider";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 
 import NextTopLoader from "nextjs-toploader";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
-import { AuthModal } from "@/features/auth/components/AuthModal";
 import { AuthProvider } from "@/features/auth/context/AuthContext";
-import { ChatBot } from "@/components/ChatBot/ChatBot";
 
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -39,6 +35,11 @@ const mono = JetBrains_Mono({
 
 export const metadata = generateMetadata();
 
+/**
+ * Root layout: document, fonts, providers and global overlays only.
+ * Marketing chrome lives in (marketing)/layout.tsx; the signed-in app
+ * shell lives in (app)/layout.tsx.
+ */
 export default function RootLayout({
   children,
 }: {
@@ -60,11 +61,7 @@ export default function RootLayout({
             <AuthProvider>
               <NextTopLoader showSpinner={false} color="#fcba28" height={2} />
               <div id="portal-root" />
-              <Header />
-              <AuthModal />
-              <main className="pt-[72px]">{children}</main>
-              <ChatBot />
-              <Footer />
+              {children}
               <Toaster />
               <Analytics />
             </AuthProvider>

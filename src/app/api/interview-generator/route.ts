@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { InterviewQuestion, InterviewResult, UserInput } from '@/app/products/interview-generator/types';
+import { InterviewQuestion, InterviewResult, UserInput } from '@/app/(marketing)/products/interview-generator/types';
 import { v4 as uuidv4 } from 'uuid';
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
