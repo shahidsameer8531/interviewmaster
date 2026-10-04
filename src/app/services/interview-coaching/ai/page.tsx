@@ -647,7 +647,7 @@ export default function AIInterviewCoachingPage() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 mb-4"
+                  className="bg-navy-700/50 backdrop-blur-lg rounded-xl p-6 mb-4"
                 >
                   <div className="flex items-center gap-3 mb-2">
                     <div className="animate-spin rounded-full h-4 w-4 border-2 border-[#fcba28] border-t-transparent" />
@@ -662,7 +662,7 @@ export default function AIInterviewCoachingPage() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 mb-8"
+                  className="bg-navy-700/50 backdrop-blur-lg rounded-xl p-6 mb-8"
                 >
                   <h3 className="text-2xl font-bold mb-4">Detailed Feedback</h3>
                   
@@ -705,7 +705,7 @@ export default function AIInterviewCoachingPage() {
 
                   {/* Timing Analysis */}
                   <div className="mb-6">
-                    <h4 className="text-lg font-semibold text-purple-400 mb-2">Answer Timing</h4>
+                    <h4 className="text-lg font-semibold text-gold mb-2">Answer Timing</h4>
                     <p className="text-gray-300">
                       Duration: {feedback.timingAnalysis.duration.toFixed(1)}s
                       <br />
@@ -729,7 +729,7 @@ export default function AIInterviewCoachingPage() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 mb-4"
+                  className="bg-navy-700/50 backdrop-blur-lg rounded-xl p-6 mb-4"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold">Analysis in Progress</h3>
@@ -775,7 +775,7 @@ export default function AIInterviewCoachingPage() {
                     
                     {progressiveAnalysis.technical && (
                       <div>
-                        <h4 className="text-md font-semibold text-purple-400">Technical Analysis</h4>
+                        <h4 className="text-md font-semibold text-gold">Technical Analysis</h4>
                         <div className="grid grid-cols-2 gap-4 mt-2">
                           <div>
                             <p className="text-sm text-gray-400">Accuracy</p>

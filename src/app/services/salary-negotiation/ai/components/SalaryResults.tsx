@@ -34,7 +34,7 @@ export const SalaryResults = ({ result }: SalaryResultsProps) => {
       transition={{ duration: 0.5, delay }}
       className="flex-1"
     >
-      <Card className="p-6 bg-gray-900/50 border-[#fcba28]/20 hover:border-[#fcba28]/40 transition-colors backdrop-blur-lg">
+      <Card className="p-6 bg-navy-800/50 border-[#fcba28]/20 hover:border-[#fcba28]/40 transition-colors backdrop-blur-lg">
         <h3 className="text-gray-400 mb-2 text-sm font-medium">{title}</h3>
         <p className="text-2xl md:text-3xl font-bold text-white">
           {formatCurrency(amount, currency)}
@@ -59,7 +59,7 @@ export const SalaryResults = ({ result }: SalaryResultsProps) => {
         animate="animate"
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <Card className="p-6 bg-gray-900/50 border-[#fcba28]/20 backdrop-blur-lg">
+        <Card className="p-6 bg-navy-800/50 border-[#fcba28]/20 backdrop-blur-lg">
           <div className="flex items-center mb-4">
             <DollarSign className="w-5 h-5 text-[#fcba28] mr-2" />
             <h3 className="text-lg font-semibold text-white">Key Factors</h3>
@@ -87,7 +87,7 @@ export const SalaryResults = ({ result }: SalaryResultsProps) => {
         animate="animate"
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <Card className="p-6 bg-gray-900/50 border-[#fcba28]/20 backdrop-blur-lg">
+        <Card className="p-6 bg-navy-800/50 border-[#fcba28]/20 backdrop-blur-lg">
           <div className="flex items-center mb-4">
             <TrendingUp className="w-5 h-5 text-[#fcba28] mr-2" />
             <h3 className="text-lg font-semibold text-white">Market Insights</h3>
@@ -115,7 +115,7 @@ export const SalaryResults = ({ result }: SalaryResultsProps) => {
         animate="animate"
         transition={{ duration: 0.5, delay: 0.5 }}
       >
-        <Card className="p-6 bg-gray-900/50 border-[#fcba28]/20 backdrop-blur-lg">
+        <Card className="p-6 bg-navy-800/50 border-[#fcba28]/20 backdrop-blur-lg">
           <div className="flex items-center mb-4">
             <Lightbulb className="w-5 h-5 text-[#fcba28] mr-2" />
             <h3 className="text-lg font-semibold text-white">Negotiation Tips</h3>
@@ -143,7 +143,7 @@ export const SalaryResults = ({ result }: SalaryResultsProps) => {
         animate="animate"
         transition={{ duration: 0.5, delay: 0.6 }}
       >
-        <Card className="p-6 bg-gray-900/50 border-[#fcba28]/20 backdrop-blur-lg">
+        <Card className="p-6 bg-navy-800/50 border-[#fcba28]/20 backdrop-blur-lg">
           <div className="flex items-center mb-4">
             <Gift className="w-5 h-5 text-[#fcba28] mr-2" />
             <h3 className="text-lg font-semibold text-white">Benefits Analysis</h3>

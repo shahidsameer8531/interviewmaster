@@ -29,7 +29,7 @@ const getTypeColor = (type: string) => {
     case 'Tech':
       return 'bg-blue-500/20 text-blue-400';
     case 'Non-Tech':
-      return 'bg-purple-500/20 text-purple-400';
+      return 'bg-purple-500/20 text-gold';
     default:
       return 'bg-gray-500/20 text-gray-400';
   }

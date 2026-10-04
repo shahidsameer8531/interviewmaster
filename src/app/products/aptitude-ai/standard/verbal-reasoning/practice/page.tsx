@@ -347,7 +347,7 @@ const VerbalReasoningPractice = () => {
       {/* AI Question Generator Dialog */}
       <dialog
         id="aiGeneratorDialog"
-        className="p-8 rounded-xl bg-black/95 backdrop:bg-gray-900/50 text-white border border-[#fcba28]/20 backdrop-blur-lg"
+        className="p-8 rounded-xl bg-black/95 backdrop:bg-navy-800/50 text-white border border-[#fcba28]/20 backdrop-blur-lg"
       >
         <h2 className="text-2xl font-bold text-[#fcba28] mb-6">Generate AI Question</h2>
         <div className="space-y-6">

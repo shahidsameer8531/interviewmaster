@@ -633,7 +633,7 @@ export default function AITestForm({ onSubmit, loading, previousPerformance }: A
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#1a1a1a] rounded-xl p-8 border border-[#fcba28]/20"
+            className="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-navy-800 rounded-xl p-8 border border-[#fcba28]/20"
           >
             <h2 className="text-2xl font-bold text-white mb-6">Review Test Configuration</h2>
             

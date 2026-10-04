@@ -33,7 +33,7 @@ export function TutorialCard({ tutorial, onClick }: TutorialCardProps) {
       case 'intermediate':
         return 'bg-[#fcba28]/20 text-[#fcba28] border-[#fcba28]/20';
       case 'advanced':
-        return 'bg-purple-500/20 text-purple-400 border-purple-500/20';
+        return 'bg-purple-500/20 text-gold border-purple-500/20';
       default:
         return 'bg-blue-500/20 text-blue-400 border-blue-500/20';
     }

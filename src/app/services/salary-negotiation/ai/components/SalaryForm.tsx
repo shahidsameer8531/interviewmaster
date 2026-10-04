@@ -260,7 +260,7 @@ export function SalaryForm({ onSubmit }: { onSubmit: (data: any) => void }) {
             <Input
               id="role"
               placeholder="e.g. Senior Software Engineer"
-              className="bg-gray-800/50 border-gray-700 text-white"
+              className="bg-navy-700/50 border-gray-700 text-white"
               value={formData.role}
               onChange={e => setFormData(prev => ({ ...prev, role: e.target.value }))}
             />
@@ -276,7 +276,7 @@ export function SalaryForm({ onSubmit }: { onSubmit: (data: any) => void }) {
             <Input
               id="industry"
               placeholder="e.g. Technology"
-              className="bg-gray-800/50 border-gray-700 text-white"
+              className="bg-navy-700/50 border-gray-700 text-white"
               value={formData.industry}
               onChange={e => setFormData(prev => ({ ...prev, industry: e.target.value }))}
             />
@@ -291,7 +291,7 @@ export function SalaryForm({ onSubmit }: { onSubmit: (data: any) => void }) {
             <Label htmlFor="companySize" className="text-white">Company Size</Label>
             <select
               id="companySize"
-              className="w-full bg-gray-800/50 border-gray-700 text-white rounded-md"
+              className="w-full bg-navy-700/50 border-gray-700 text-white rounded-md"
               value={formData.companySize}
               onChange={e => setFormData(prev => ({ ...prev, companySize: e.target.value }))}
             >
@@ -311,7 +311,7 @@ export function SalaryForm({ onSubmit }: { onSubmit: (data: any) => void }) {
             <Label htmlFor="workMode" className="text-white">Work Mode</Label>
             <select
               id="workMode"
-              className="w-full bg-gray-800/50 border-gray-700 text-white rounded-md"
+              className="w-full bg-navy-700/50 border-gray-700 text-white rounded-md"
               value={formData.workMode}
               onChange={e => setFormData(prev => ({ ...prev, workMode: e.target.value }))}
             >
@@ -344,7 +344,7 @@ export function SalaryForm({ onSubmit }: { onSubmit: (data: any) => void }) {
               id="experience"
               type="number"
               placeholder="e.g. 5"
-              className="bg-gray-800/50 border-gray-700 text-white"
+              className="bg-navy-700/50 border-gray-700 text-white"
               value={formData.experience}
               onChange={e => setFormData(prev => ({ ...prev, experience: e.target.value }))}
             />
@@ -360,7 +360,7 @@ export function SalaryForm({ onSubmit }: { onSubmit: (data: any) => void }) {
             <Input
               id="education"
               placeholder="e.g. Master's in Computer Science"
-              className="bg-gray-800/50 border-gray-700 text-white"
+              className="bg-navy-700/50 border-gray-700 text-white"
               value={formData.education}
               onChange={e => setFormData(prev => ({ ...prev, education: e.target.value }))}
             />
@@ -375,7 +375,7 @@ export function SalaryForm({ onSubmit }: { onSubmit: (data: any) => void }) {
             <Label htmlFor="managementLevel" className="text-white">Management Level</Label>
             <select
               id="managementLevel"
-              className="w-full bg-gray-800/50 border-gray-700 text-white rounded-md"
+              className="w-full bg-navy-700/50 border-gray-700 text-white rounded-md"
               value={formData.managementLevel}
               onChange={e => setFormData(prev => ({ ...prev, managementLevel: e.target.value }))}
             >
@@ -397,7 +397,7 @@ export function SalaryForm({ onSubmit }: { onSubmit: (data: any) => void }) {
               id="currentSalary"
               type="number"
               placeholder="e.g. 100000"
-              className="bg-gray-800/50 border-gray-700 text-white"
+              className="bg-navy-700/50 border-gray-700 text-white"
               value={formData.currentSalary}
               onChange={e => setFormData(prev => ({ ...prev, currentSalary: e.target.value }))}
             />
@@ -426,7 +426,7 @@ export function SalaryForm({ onSubmit }: { onSubmit: (data: any) => void }) {
           <div className="flex gap-2">
             <Input
               placeholder="Add a skill"
-              className="bg-gray-800/50 border-gray-700 text-white"
+              className="bg-navy-700/50 border-gray-700 text-white"
               value={skillInput}
               onChange={e => setSkillInput(e.target.value)}
               onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), addItem('skills', skillInput, setSkillInput))}
@@ -473,7 +473,7 @@ export function SalaryForm({ onSubmit }: { onSubmit: (data: any) => void }) {
           <div className="flex gap-2">
             <Input
               placeholder="Add a certification"
-              className="bg-gray-800/50 border-gray-700 text-white"
+              className="bg-navy-700/50 border-gray-700 text-white"
               value={certInput}
               onChange={e => setCertInput(e.target.value)}
               onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), addItem('certifications', certInput, setCertInput))}
@@ -520,7 +520,7 @@ export function SalaryForm({ onSubmit }: { onSubmit: (data: any) => void }) {
           <div className="flex gap-2">
             <Input
               placeholder="Add a language"
-              className="bg-gray-800/50 border-gray-700 text-white"
+              className="bg-navy-700/50 border-gray-700 text-white"
               value={languageInput}
               onChange={e => setLanguageInput(e.target.value)}
               onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), addItem('languages', languageInput, setLanguageInput))}
@@ -593,7 +593,7 @@ export function SalaryForm({ onSubmit }: { onSubmit: (data: any) => void }) {
                     }));
                   }
                 }}
-                className="rounded border-gray-700 bg-gray-800/50 text-[#fcba28] focus:ring-[#fcba28]"
+                className="rounded border-gray-700 bg-navy-700/50 text-[#fcba28] focus:ring-[#fcba28]"
               />
               <span>{benefit}</span>
             </label>
@@ -615,13 +615,13 @@ export function SalaryForm({ onSubmit }: { onSubmit: (data: any) => void }) {
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="w-full justify-between bg-gray-800/50 border-gray-700 text-white hover:bg-gray-700/50"
+              className="w-full justify-between bg-navy-700/50 border-gray-700 text-white hover:bg-gray-700/50"
             >
               {formData.location || "Select location..."}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full p-0 bg-gray-800 border-gray-700">
+          <PopoverContent className="w-full p-0 bg-navy-700 border-gray-700">
             <Command className="bg-transparent">
               <CommandInput placeholder="Search location..." className="text-white" />
               <CommandEmpty>No location found.</CommandEmpty>

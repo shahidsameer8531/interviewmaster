@@ -24,7 +24,7 @@ export const Background = () => {
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden">
       {/* Main gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
+      <div className="absolute inset-0 bg-gradient-to-br from-navy-950 via-gray-900 to-navy-950" />
 
       {/* Animated gradient overlay */}
       <motion.div

@@ -114,7 +114,7 @@ export default function MeetupsPage() {
                 />
               ))}
               {meetup.attendees.total > meetup.attendees.avatars.length && (
-                <div className="w-8 h-8 rounded-full border-2 border-gray-900 bg-gray-800 flex items-center justify-center text-xs text-gray-300">
+                <div className="w-8 h-8 rounded-full border-2 border-gray-900 bg-navy-700 flex items-center justify-center text-xs text-gray-300">
                   +{meetup.attendees.total - meetup.attendees.avatars.length}
                 </div>
               )}
@@ -164,7 +164,7 @@ export default function MeetupsPage() {
           className="bg-white/5 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#fcba28] border border-white/10"
         >
           {categories.map(category => (
-            <option key={category.value} value={category.value} className="bg-gray-900">
+            <option key={category.value} value={category.value} className="bg-navy-800">
               {category.label}
             </option>
           ))}
@@ -175,7 +175,7 @@ export default function MeetupsPage() {
           className="bg-white/5 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#fcba28] border border-white/10"
         >
           {cities.map(city => (
-            <option key={city.value} value={city.value} className="bg-gray-900">
+            <option key={city.value} value={city.value} className="bg-navy-800">
               {city.label}
             </option>
           ))}

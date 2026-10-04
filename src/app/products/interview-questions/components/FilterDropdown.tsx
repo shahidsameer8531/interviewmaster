@@ -42,7 +42,7 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute z-10 w-full mt-2 py-2 bg-[#1a1a1a] rounded-lg border border-white/10 shadow-xl"
+            className="absolute z-10 w-full mt-2 py-2 bg-navy-800 rounded-lg border border-white/10 shadow-xl"
           >
             {options.map((option) => (
               <button

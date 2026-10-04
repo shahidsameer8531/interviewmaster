@@ -151,7 +151,7 @@ export const QuestionPanel: React.FC<QuestionPanelProps> = ({
                   className="w-full bg-white/10 border border-white/20 rounded-lg p-2 text-white"
                 >
                   {questionTypes.map((type) => (
-                    <option key={type.value} value={type.value} className="bg-gray-800">
+                    <option key={type.value} value={type.value} className="bg-navy-700">
                       {type.label}
                     </option>
                   ))}
@@ -165,7 +165,7 @@ export const QuestionPanel: React.FC<QuestionPanelProps> = ({
                   className="w-full bg-white/10 border border-white/20 rounded-lg p-2 text-white"
                 >
                   {difficultyLevels.map((level) => (
-                    <option key={level.value} value={level.value} className="bg-gray-800">
+                    <option key={level.value} value={level.value} className="bg-navy-700">
                       {level.label}
                     </option>
                   ))}
@@ -200,7 +200,7 @@ export const QuestionPanel: React.FC<QuestionPanelProps> = ({
                     className="w-full bg-white/10 border border-white/20 rounded-lg p-2 text-white"
                   >
                     {questionTypes.filter(t => t.value !== 'all').map((type) => (
-                      <option key={type.value} value={type.value} className="bg-gray-800">
+                      <option key={type.value} value={type.value} className="bg-navy-700">
                         {type.label}
                       </option>
                     ))}
@@ -213,7 +213,7 @@ export const QuestionPanel: React.FC<QuestionPanelProps> = ({
                     className="w-full bg-white/10 border border-white/20 rounded-lg p-2 text-white"
                   >
                     {difficultyLevels.filter(l => l.value !== 'all').map((level) => (
-                      <option key={level.value} value={level.value} className="bg-gray-800">
+                      <option key={level.value} value={level.value} className="bg-navy-700">
                         {level.label}
                       </option>
                     ))}

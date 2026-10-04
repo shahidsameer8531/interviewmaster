@@ -62,7 +62,7 @@ export const UserButton = () => {
                     </AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" side="bottom" className="w-60 bg-background border-none shadow-xl shadow-neutral-900 text-foreground">
+            <DropdownMenuContent align="end" side="bottom" className="w-60 bg-background border-none shadow-xl shadow-navy-950 text-foreground">
                 <div className="px-2 py-1.5 flex items-center gap-2">
                     <Avatar className="h-8 w-8 border-2 border-[#fcba28] rounded-full">
                         <AvatarImage 

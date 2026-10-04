@@ -202,7 +202,7 @@ export default function SalaryNegotiationPage() {
           <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.02 }}
-            className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] p-8 transition-all hover:shadow-lg"
+            className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-navy-800 to-navy-700 p-8 transition-all hover:shadow-lg"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-[#fcba2810] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative z-10">

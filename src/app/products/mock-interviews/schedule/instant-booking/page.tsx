@@ -249,7 +249,7 @@ export default function InstantBookingPage() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-gray-900 rounded-xl p-8 max-w-md w-full border border-[#fcba28]/20"
+              className="bg-navy-800 rounded-xl p-8 max-w-md w-full border border-[#fcba28]/20"
             >
               <div className="text-center mb-6">
                 <div className="w-16 h-16 bg-[#fcba28]/20 rounded-full flex items-center justify-center mx-auto mb-4">

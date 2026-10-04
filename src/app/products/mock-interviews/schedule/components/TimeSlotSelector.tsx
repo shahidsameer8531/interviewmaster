@@ -86,7 +86,7 @@ export const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
                     ? 'bg-[#fcba28] text-black'
                     : slot.isAvailable
                     ? 'bg-white/10 text-white hover:bg-white/20'
-                    : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                    : 'bg-navy-700 text-gray-500 cursor-not-allowed'
                 }`}
               >
                 <div className="text-sm font-medium">

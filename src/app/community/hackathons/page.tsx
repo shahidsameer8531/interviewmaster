@@ -196,7 +196,7 @@ export default function HackathonsPage() {
           className="bg-white/5 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#fcba28] border border-white/10"
         >
           {categories.map(category => (
-            <option key={category.value} value={category.value} className="bg-gray-900">
+            <option key={category.value} value={category.value} className="bg-navy-800">
               {category.label}
             </option>
           ))}
@@ -207,7 +207,7 @@ export default function HackathonsPage() {
           className="bg-white/5 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#fcba28] border border-white/10"
         >
           {difficulties.map(difficulty => (
-            <option key={difficulty.value} value={difficulty.value} className="bg-gray-900">
+            <option key={difficulty.value} value={difficulty.value} className="bg-navy-800">
               {difficulty.label}
             </option>
           ))}

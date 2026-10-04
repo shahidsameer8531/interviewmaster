@@ -39,7 +39,7 @@ export const CanvasCover = ({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       ref={ref}
-      className="relative hover:bg-neutral-900  group/cover inline-block dark:bg-neutral-900 bg-foreground px-2 py-2  transition duration-200 rounded-sm"
+      className="relative hover:bg-navy-800  group/cover inline-block dark:bg-navy-800 bg-foreground px-2 py-2  transition duration-200 rounded-sm"
     >
       <AnimatePresence mode="wait">
         {hovered && (

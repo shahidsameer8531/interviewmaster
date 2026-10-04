@@ -12,7 +12,7 @@ export default function AIPersonaliseInterviewLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-navy-950 text-white min-h-screen">
       {children}
     </div>
   );

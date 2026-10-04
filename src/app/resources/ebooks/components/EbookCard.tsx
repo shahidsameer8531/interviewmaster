@@ -70,7 +70,7 @@ export function EbookCard({ ebook }: EbookCardProps) {
           <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
             ebook.difficulty === 'Beginner' ? 'bg-green-500/20 text-green-400' :
             ebook.difficulty === 'Intermediate' ? 'bg-[#fcba28]/20 text-[#fcba28]' :
-            'bg-purple-500/20 text-purple-400'
+            'bg-purple-500/20 text-gold'
           }`}>
             {ebook.difficulty}
           </span>

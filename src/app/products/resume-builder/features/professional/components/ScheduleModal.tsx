@@ -109,7 +109,7 @@ const ScheduleModal = ({ isOpen, onClose, writer }: ScheduleModalProps) => {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        className="bg-gray-900 rounded-xl w-full max-w-2xl overflow-hidden"
+        className="bg-navy-800 rounded-xl w-full max-w-2xl overflow-hidden"
       >
         {/* Header */}
         <div className="p-6 border-b border-white/10">

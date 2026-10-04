@@ -13,7 +13,7 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+    <div className="min-h-screen bg-navy-950 flex items-center justify-center p-4">
       <div className="max-w-md w-full text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -29,7 +29,7 @@ export default function Error({
           <div className="flex justify-center gap-4 pt-6">
             <Link
               href="/products/mock-interviews/visual-simulation"
-              className="px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center gap-2"
+              className="px-6 py-2 bg-navy-700 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               Go Back

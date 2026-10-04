@@ -60,13 +60,13 @@ export const SkillInput: React.FC<SkillInputProps> = ({
                 <select
                   value={skill.skillId}
                   onChange={(e) => onUpdateSkill(index, { skillId: e.target.value })}
-                  className="w-full p-3 rounded-lg bg-[#1a1a1a] border border-white/10 text-white focus:border-[#fcba28] focus:outline-none transition-colors [&>option]:bg-[#1a1a1a] [&>optgroup]:bg-[#1a1a1a] [&>optgroup]:text-[#fcba28] [&>option]:text-white"
+                  className="w-full p-3 rounded-lg bg-navy-800 border border-white/10 text-white focus:border-[#fcba28] focus:outline-none transition-colors [&>option]:bg-navy-800 [&>optgroup]:bg-navy-800 [&>optgroup]:text-[#fcba28] [&>option]:text-white"
                 >
-                  <option value="" className="bg-[#1a1a1a] text-white">Select a skill</option>
+                  <option value="" className="bg-navy-800 text-white">Select a skill</option>
                   {skillCategories.map((category) => (
-                    <optgroup key={category.id} label={category.name} className="bg-[#1a1a1a] text-[#fcba28] font-semibold">
+                    <optgroup key={category.id} label={category.name} className="bg-navy-800 text-[#fcba28] font-semibold">
                       {category.topics.map((topic) => (
-                        <option key={topic.id} value={topic.id} className="bg-[#1a1a1a] text-white">
+                        <option key={topic.id} value={topic.id} className="bg-navy-800 text-white">
                           {topic.name}
                         </option>
                       ))}

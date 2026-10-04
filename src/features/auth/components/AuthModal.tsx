@@ -50,13 +50,13 @@ export function AuthModal() {
                     initial={{ scale: 0.95, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.95, opacity: 0 }}
-                    className="bg-gradient-to-br from-gray-900 to-black p-6 rounded-2xl shadow-xl max-w-md w-full relative"
+                    className="bg-gradient-to-br from-gray-900 to-navy-950 p-6 rounded-2xl shadow-xl max-w-md w-full relative"
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Close button */}
                     <button
                         onClick={handleClose}
-                        className="absolute -top-4 -right-4 p-2 bg-gray-800 text-gray-400 rounded-full hover:text-white transition-colors"
+                        className="absolute -top-4 -right-4 p-2 bg-navy-700 text-gray-400 rounded-full hover:text-white transition-colors"
                     >
                         <X size={20} />
                     </button>
@@ -94,7 +94,7 @@ export function AuthModal() {
                                 <div className="w-full border-t border-gray-700"></div>
                             </div>
                             <div className="relative flex justify-center text-sm">
-                                <span className="px-2 bg-black text-gray-400">Or</span>
+                                <span className="px-2 bg-navy-950 text-gray-400">Or</span>
                             </div>
                         </div>
 

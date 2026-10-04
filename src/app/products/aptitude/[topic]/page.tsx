@@ -27,7 +27,7 @@ const topics = {
   logical: {
     title: 'Logical Reasoning',
     icon: Brain,
-    color: 'bg-purple-500/10 text-purple-400',
+    color: 'bg-purple-500/10 text-gold',
     description: 'Enhance your analytical and critical thinking skills',
   },
   verbal: {

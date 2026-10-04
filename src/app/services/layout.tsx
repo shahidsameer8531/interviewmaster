@@ -1,46 +1,12 @@
-import "../globals.css";
-
-import { cn } from "@/lib/utils";
-import { Noto_Sans } from 'next/font/google';
-import { Analytics } from "@/lib/analytics/Analytics";
+import { MaxWidthWrapper } from "@/components/MaxWidthWrapper";
 import { generateMetadata } from "@/lib/generateMetadata";
-import { ConvexClientProvider } from "@/providers/ConvexAuthProvider";
-import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 
-import NextTopLoader from 'nextjs-toploader';
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { Toaster } from "@/components/ui/sonner";
+export const metadata = generateMetadata({ title: "Services · InterviewMaster.ai" });
 
-
-const font = Noto_Sans({ weight: ['400', '700'], subsets: ['latin'] });
-
-export const metadata = generateMetadata();
-
+// The root layout already provides <html>, <body>, Header and Footer.
+// This layout only frames the section content.
 export default function ServicesLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <ConvexAuthNextjsServerProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={cn(font.className, "antialiased")}
-        >
-          <ConvexClientProvider>
-            {/* Customize the loader color to match your theme */}
-            <NextTopLoader showSpinner={false} color="#fcba28" />
-            <Toaster />
-            <Header />
-            <main className="container mx-auto px-6 py-10">
-              {children}
-            </main>
-            <Footer />
-          </ConvexClientProvider>
-        </body>
-        <Analytics />
-      </html>
-    </ConvexAuthNextjsServerProvider>
-  );
+}: Readonly<{ children: React.ReactNode }>) {
+  return <MaxWidthWrapper className="py-10 md:py-14">{children}</MaxWidthWrapper>;
 }

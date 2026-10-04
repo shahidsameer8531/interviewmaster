@@ -105,7 +105,7 @@ export function FilterBar({
                 className="w-full px-4 py-3 bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-[#fcba28]/50 focus:border-[#fcba28] transition-all duration-300"
               >
                 {categories.map((category) => (
-                  <option key={category.value} value={category.value} className="bg-gray-900">
+                  <option key={category.value} value={category.value} className="bg-navy-800">
                     {category.label}
                   </option>
                 ))}
@@ -121,7 +121,7 @@ export function FilterBar({
                 className="w-full px-4 py-3 bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-[#fcba28]/50 focus:border-[#fcba28] transition-all duration-300"
               >
                 {difficulties.map((difficulty) => (
-                  <option key={difficulty.value} value={difficulty.value} className="bg-gray-900">
+                  <option key={difficulty.value} value={difficulty.value} className="bg-navy-800">
                     {difficulty.label}
                   </option>
                 ))}
@@ -137,7 +137,7 @@ export function FilterBar({
                 className="w-full px-4 py-3 bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-[#fcba28]/50 focus:border-[#fcba28] transition-all duration-300"
               >
                 {sortOptions.map((option) => (
-                  <option key={option.value} value={option.value} className="bg-gray-900">
+                  <option key={option.value} value={option.value} className="bg-navy-800">
                     {option.label}
                   </option>
                 ))}

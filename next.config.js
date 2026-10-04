@@ -127,6 +127,7 @@ module.exports = {
     CONVEX_DEPLOYMENT: process.env.CONVEX_DEPLOYMENT,
     STRIPE_URL_ENDPOINT: process.env.STRIPE_URL_ENDPOINT,
     GA_ID: process.env.GA_ID,
+    HOSTING_URL: process.env.HOSTING_URL,
     MC_ID: process.env.MC_ID,
   },
 };

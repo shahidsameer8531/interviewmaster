@@ -105,7 +105,7 @@ export default function SalaryNegotiationPage() {
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
             >
-              <div className="bg-gray-900/90 p-8 rounded-xl shadow-xl text-center backdrop-blur-lg border border-[#fcba28]/20">
+              <div className="bg-navy-800/90 p-8 rounded-xl shadow-xl text-center backdrop-blur-lg border border-[#fcba28]/20">
                 <div className="relative w-16 h-16 mx-auto mb-4">
                   <motion.div
                     className="absolute inset-0 rounded-full border-4 border-[#fcba28] border-t-transparent"

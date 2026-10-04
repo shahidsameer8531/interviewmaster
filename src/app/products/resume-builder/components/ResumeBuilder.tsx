@@ -138,8 +138,8 @@ export const ResumeBuilder = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <header className="sticky top-0 z-50 bg-gray-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-900/75 border-b border-white/10">
+    <div className="min-h-screen bg-navy-800 text-white">
+      <header className="sticky top-0 z-50 bg-navy-800/95 backdrop-blur supports-[backdrop-filter]:bg-navy-800/75 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-4 flex items-center justify-between">
             <h1 className="text-xl font-semibold">Resume Builder</h1>
@@ -218,7 +218,7 @@ export const ResumeBuilder = () => {
       {/* Settings Modal */}
       {showSettings && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-gray-900 rounded-xl p-6 max-w-md w-full mx-4">
+          <div className="bg-navy-800 rounded-xl p-6 max-w-md w-full mx-4">
             <h2 className="text-xl font-semibold mb-4">Template Settings</h2>
             <div className="space-y-4">
               {/* Font Settings */}

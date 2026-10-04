@@ -1,410 +1,337 @@
-import { motion, useAnimation, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
-import { Mic, Bot, BrainCircuit, Code2, GitBranch, Database, Sparkles, MessageSquare, CheckCircle2, ChevronRight } from "lucide-react";
-import Link from "next/link";
+'use client';
 
-// Interview scenarios for the simulation
-const interviewScenarios = [
-    {
-        type: "System Design",
-        question: "Design a real-time chat application",
-        concepts: ["Scalability", "WebSocket", "Load Balancing"],
-        difficulty: "Advanced"
-    },
-    {
-        type: "Algorithms",
-        question: "Implement a distributed cache",
-        concepts: ["Time Complexity", "Distributed Systems", "Caching"],
-        difficulty: "Expert"
-    },
-    {
-        type: "Backend",
-        question: "Design a rate limiter",
-        concepts: ["API Design", "Throttling", "Redis"],
-        difficulty: "Intermediate"
-    }
-];
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Mic, Sparkles } from "lucide-react";
 
-const DifficultyBadge = ({ level }) => {
-    const colors = {
-        Intermediate: "text-green-400 bg-green-400/10 border-green-400/20",
-        Advanced: "text-amber-400 bg-amber-400/10 border-amber-400/20",
-        Expert: "text-red-400 bg-red-400/10 border-red-400/20"
-    };
+import { cn } from "@/lib/utils";
 
-    return (
-        <div className={`px-3 py-1 rounded-full text-xs border ${colors[level]}`}>
-            {level}
-        </div>
-    );
+/**
+ * The hero's signature: a live mock-interview console.
+ * It plays a scripted exchange for the chosen track, then scores it.
+ * Visitors can switch tracks; auto-advance pauses while they interact.
+ */
+
+type Script = {
+    id: string;
+    label: string;
+    role: string;
+    question: string;
+    answer: string;
+    scores: { clarity: number; structure: number; confidence: number };
+    tip: string;
 };
 
-const InterviewSimulation = ({ scenario, isAnalyzing }) => (
-    <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="relative p-6 rounded-xl bg-black/20 border border-white/10 overflow-hidden"
-    >
-        {/* Header */}
-        <div className="flex items-center justify-between mb-4">
-            <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="flex items-center gap-3"
-            >
-                <Code2 className="w-5 h-5 text-[#fcba28]" />
-                <span className="text-sm font-medium text-[#fcba28]">{scenario.type}</span>
-            </motion.div>
-            <DifficultyBadge level={scenario.difficulty} />
-        </div>
+const scripts: Script[] = [
+    {
+        id: "behavioral",
+        label: "Behavioral",
+        role: "Product Manager · Amazon",
+        question: "Tell me about a time you disagreed with a stakeholder and how you handled it.",
+        answer:
+            "At my last company the sales lead wanted a feature shipped in two weeks. I shared usage data showing only 4% of accounts would use it, proposed a lighter version, and we agreed on a two-step rollout. It shipped in nine days and adoption hit 18%.",
+        scores: { clarity: 86, structure: 91, confidence: 78 },
+        tip: "Strong STAR structure. Say the result first next time, then the story.",
+    },
+    {
+        id: "technical",
+        label: "Technical",
+        role: "Backend Engineer · Stripe",
+        question: "How would you make an idempotent payment endpoint?",
+        answer:
+            "The client sends an idempotency key with each request. I store the key with the response in a table that has a unique constraint, and on a retry I return the stored response instead of charging again. Keys expire after 24 hours.",
+        scores: { clarity: 82, structure: 74, confidence: 88 },
+        tip: "Good. Mention how you handle a retry that arrives while the first request is still running.",
+    },
+    {
+        id: "system",
+        label: "System design",
+        role: "Senior Engineer · Netflix",
+        question: "Design the notification service for a streaming app.",
+        answer:
+            "I'd start with the requirements: 50 million users, push and email, and delivery within a minute. Producers publish events to a queue, workers fan out per channel with retries, and a preferences service filters before send so we never spam.",
+        scores: { clarity: 79, structure: 83, confidence: 72 },
+        tip: "You covered scale and channels. Add how you de-duplicate when a user has multiple devices.",
+    },
+    {
+        id: "leadership",
+        label: "Leadership",
+        role: "Engineering Manager · Shopify",
+        question: "How do you handle an underperforming senior engineer?",
+        answer:
+            "First I make sure the gap is real and specific, with examples. Then a direct conversation, a 30-day plan with measurable outcomes, and weekly check-ins. In the one case I had, the issue was unclear ownership and it resolved in three weeks.",
+        scores: { clarity: 90, structure: 88, confidence: 85 },
+        tip: "Clear and humane. Quantify the outcome of the plan, not just the timeline.",
+    },
+];
 
-        {/* Question */}
-        <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6"
-        >
-            <div className="text-xl font-semibold text-white/90 mb-2">{scenario.question}</div>
-            <div className="flex flex-wrap gap-2">
-                {scenario.concepts.map((concept, index) => (
-                    <motion.div
-                        key={concept}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="px-3 py-1 rounded-full bg-[#fcba28]/10 border border-[#fcba28]/20 text-xs"
-                    >
-                        {concept}
-                    </motion.div>
-                ))}
-            </div>
-        </motion.div>
+type Phase = "asking" | "answering" | "scoring" | "done";
 
-        {/* AI Analysis Overlay */}
-        <AnimatePresence>
-            {isAnalyzing && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-gradient-to-r from-[#fcba28]/20 to-transparent backdrop-blur-sm"
-                >
-                    <div className="h-full flex items-center justify-center">
-                        <div className="text-center">
-                            <motion.div
-                                animate={{
-                                    scale: [1, 1.2, 1],
-                                    rotate: [0, 180, 360],
-                                }}
-                                transition={{
-                                    duration: 2,
-                                    repeat: Infinity,
-                                    ease: "linear",
-                                }}
-                                className="w-12 h-12 rounded-full border-2 border-[#fcba28] border-t-transparent mx-auto mb-4"
-                            />
-                            <p className="text-sm text-white/60">AI analyzing response patterns...</p>
-                        </div>
-                    </div>
-                </motion.div>
-            )}
-        </AnimatePresence>
-
-        {/* Interactive Elements */}
-        <div className="mt-6 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="p-2 rounded-lg bg-[#fcba28]/20 text-[#fcba28]"
-                >
-                    <Mic className="w-5 h-5" />
-                </motion.button>
-                <div className="h-2 w-32 rounded-full bg-[#fcba28]/20">
-                    <motion.div
-                        animate={{
-                            width: ["0%", "100%"],
-                        }}
-                        transition={{
-                            duration: 3,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                        }}
-                        className="h-full rounded-full bg-[#fcba28]"
-                    />
-                </div>
-            </div>
-            <Link 
-                href="/products/mock-interviews/visual-simulation"
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#fcba28] text-black font-medium text-sm hover:bg-[#fcba28]/90 transition-colors"
-            >
-                Try Now
-                <ChevronRight className="w-4 h-4" />
-            </Link>
-        </div>
-    </motion.div>
-);
-
-const FeatureHighlight = ({ icon: Icon, title, description, delay = 0 }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay }}
-        className="flex flex-col items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 text-center"
-    >
-        <motion.div
-            animate={{
-                y: [-2, 2, -2],
-                rotate: [-5, 5, -5],
-            }}
-            transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-            }}
-            className="p-3 rounded-xl bg-[#fcba28]/20"
-        >
-            <Icon className="w-6 h-6 text-[#fcba28]" />
-        </motion.div>
-        <h3 className="font-medium">{title}</h3>
-        <p className="text-sm text-white/60">{description}</p>
-    </motion.div>
-);
-
-const FloatingIcon = ({ icon: Icon, delay = 0, x = 0, y = 0 }) => (
-    <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ 
-            opacity: [0.5, 1, 0.5],
-            scale: [1, 1.2, 1],
-            y: [y, y - 10, y],
-            x: [x, x + 5, x],
-            rotate: [0, 10, 0]
-        }}
-        transition={{
-            duration: 3,
-            delay,
-            repeat: Infinity,
-            ease: "easeInOut"
-        }}
-        className="absolute"
-    >
-        <div className="p-2 rounded-lg bg-[#fcba28]/10 backdrop-blur-sm">
-            <Icon className="w-5 h-5 text-[#fcba28]" />
-        </div>
-    </motion.div>
-);
-
-const AnimatedStats = ({ label, value, delay = 0 }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay }}
-        className="flex items-center gap-2"
-    >
-        <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-1.5 h-1.5 rounded-full bg-[#fcba28]"
-        />
-        <span className="text-sm text-white/60">
-            <span className="font-medium text-white">{value}</span> {label}
-        </span>
-    </motion.div>
-);
-
-export const RightHero = () => {
-    const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
-    const [isAnalyzing, setIsAnalyzing] = useState(false);
+const useTypewriter = (text: string, active: boolean, speed: number, onDone?: () => void) => {
+    const [out, setOut] = useState("");
+    const doneRef = useRef(onDone);
+    doneRef.current = onDone;
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setIsAnalyzing(true);
-            setTimeout(() => {
-                setIsAnalyzing(false);
-                setCurrentScenarioIndex((prev) => (prev + 1) % interviewScenarios.length);
-            }, 2000);
-        }, 6000);
+        if (!active) return;
+        setOut("");
+        let i = 0;
+        const id = setInterval(() => {
+            i += 1;
+            setOut(text.slice(0, i));
+            if (i >= text.length) {
+                clearInterval(id);
+                doneRef.current?.();
+            }
+        }, speed);
+        return () => clearInterval(id);
+    }, [text, active, speed]);
 
-        return () => clearInterval(interval);
-    }, []);
+    return out;
+};
 
-    return (
-        <div className="relative w-full max-w-2xl mx-auto">
-            {/* Floating Icons */}
-            <FloatingIcon icon={Code2} x={-20} y={-40} delay={0.2} />
-            <FloatingIcon icon={BrainCircuit} x={60} y={-30} delay={0.4} />
-            <FloatingIcon icon={GitBranch} x={140} y={-45} delay={0.6} />
-            <FloatingIcon icon={Database} x={200} y={-25} delay={0.8} />
-
-            {/* Main Container */}
+const Meter = ({ label, value, show, delay }: { label: string; value: number; show: boolean; delay: number }) => (
+    <div>
+        <div className="flex items-baseline justify-between">
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{label}</span>
+            <span className="font-mono text-xs tabular-nums text-foreground">
+                {show ? <Counter to={value} delay={delay} /> : "--"}
+            </span>
+        </div>
+        <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/5">
             <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8 }}
-                className="relative space-y-6"
-            >
-                {/* Header */}
-                <div className="flex items-center justify-between mb-8">
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="flex items-center gap-4"
-                    >
-                        <motion.div
-                            animate={{
-                                rotate: [0, 360],
-                                scale: [1, 1.1, 1]
-                            }}
-                            transition={{
-                                rotate: {
-                                    duration: 20,
-                                    repeat: Infinity,
-                                    ease: "linear"
-                                },
-                                scale: {
-                                    duration: 2,
-                                    repeat: Infinity,
-                                    ease: "easeInOut"
-                                }
-                            }}
-                            className="relative p-2 rounded-xl bg-[#fcba28]/20"
-                        >
-                            <motion.div
-                                animate={{
-                                    opacity: [0, 0.5, 0],
-                                    scale: [1, 1.5, 1]
-                                }}
-                                transition={{
-                                    duration: 2,
-                                    repeat: Infinity,
-                                    ease: "easeInOut"
-                                }}
-                                className="absolute inset-0 rounded-xl bg-[#fcba28]/20"
-                            />
-                            <Bot className="w-8 h-8 text-[#fcba28]" />
-                        </motion.div>
-                        <div>
-                            <h3 className="text-xl font-bold">AI Interview Simulator</h3>
-                            <div className="flex flex-col gap-1">
-                                <div className="flex items-center gap-2 text-sm text-white/60">
-                                    <span className="flex items-center gap-1">
-                                        <motion.span
-                                            animate={{ 
-                                                scale: [1, 1.5, 1],
-                                                opacity: [0.5, 1, 0.5]
-                                            }}
-                                            transition={{
-                                                duration: 2,
-                                                repeat: Infinity,
-                                                ease: "easeInOut"
-                                            }}
-                                            className="w-2 h-2 rounded-full bg-green-400"
-                                        />
-                                        Live Demo
-                                    </span>
-                                </div>
-                                <div className="flex gap-4">
-                                    <AnimatedStats label="Success Rate" value="95%" delay={0.3} />
-                                    <AnimatedStats label="Questions" value="1000+" delay={0.4} />
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    {/* Animated Label */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="flex flex-col items-end gap-2"
-                    >
-                        <motion.div
-                            animate={{ y: [-2, 2, -2] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                            className="px-3 py-1 rounded-full bg-[#fcba28]/10 border border-[#fcba28]/20 text-sm font-medium text-[#fcba28]"
-                        >
-                            AI-Powered
-                        </motion.div>
-                        <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: "100%" }}
-                            transition={{ duration: 1, delay: 0.5 }}
-                            className="h-0.5 bg-gradient-to-r from-[#fcba28]/50 to-transparent"
-                        />
-                    </motion.div>
-                </div>
-
-                {/* Interview Simulation */}
-                <InterviewSimulation
-                    scenario={interviewScenarios[currentScenarioIndex]}
-                    isAnalyzing={isAnalyzing}
-                />
-
-                {/* AI Features Grid */}
-                <div className="grid grid-cols-3 gap-4">
-                    <FeatureHighlight
-                        icon={BrainCircuit}
-                        title="Smart Analysis"
-                        description="Real-time feedback on your responses"
-                        delay={0.2}
-                    />
-                    <FeatureHighlight
-                        icon={Sparkles}
-                        title="Custom Scenarios"
-                        description="Role-specific interview simulations"
-                        delay={0.3}
-                    />
-                    <FeatureHighlight
-                        icon={MessageSquare}
-                        title="Instant Feedback"
-                        description="Detailed performance insights"
-                        delay={0.4}
-                    />
-                </div>
-            </motion.div>
-
-            {/* Decorative Elements */}
-            <motion.div
-                animate={{
-                    opacity: [0.1, 0.3, 0.1],
-                    scale: [1, 1.2, 1],
-                    rotate: [0, 180, 360]
-                }}
-                transition={{
-                    duration: 10,
-                    repeat: Infinity,
-                    ease: "linear"
-                }}
-                className="absolute -top-20 -right-20 w-40 h-40 rounded-full"
-                style={{
-                    background: "radial-gradient(circle, rgba(252,186,40,0.2) 0%, transparent 70%)"
-                }}
-            />
-            <motion.div
-                animate={{
-                    opacity: [0.3, 0.6, 0.3],
-                    scale: [1, 1.1, 1],
-                }}
-                transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                }}
-                className="absolute -top-6 -right-6 w-32 h-32 bg-[#fcba28]/10 rounded-full blur-3xl"
-            />
-            <motion.div
-                animate={{
-                    opacity: [0.2, 0.5, 0.2],
-                    scale: [1, 1.2, 1],
-                }}
-                transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 2,
-                }}
-                className="absolute -bottom-6 -left-6 w-32 h-32 bg-amber-600/10 rounded-full blur-3xl"
+                className={cn("h-full rounded-full", value >= 85 ? "bg-gold" : value >= 75 ? "bg-gold/80" : "bg-navy-300")}
+                initial={{ width: 0 }}
+                animate={{ width: show ? `${value}%` : 0 }}
+                transition={{ duration: 0.9, delay, ease: [0.2, 0.7, 0.2, 1] }}
             />
         </div>
+    </div>
+);
+
+const Counter = ({ to, delay }: { to: number; delay: number }) => {
+    const [n, setN] = useState(0);
+    useEffect(() => {
+        let raf = 0;
+        const start = performance.now() + delay * 1000;
+        const tick = (t: number) => {
+            const p = Math.min(1, Math.max(0, (t - start) / 900));
+            setN(Math.round(to * (1 - Math.pow(1 - p, 3))));
+            if (p < 1) raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(raf);
+    }, [to, delay]);
+    return <>{n}</>;
+};
+
+export const RightHero = () => {
+    const reduce = useReducedMotion();
+    const [idx, setIdx] = useState(0);
+    const [phase, setPhase] = useState<Phase>("asking");
+    const [paused, setPaused] = useState(false);
+    const [elapsed, setElapsed] = useState(0);
+    const script = scripts[idx];
+
+    const qSpeed = reduce ? 0 : 28;
+    const aSpeed = reduce ? 0 : 18;
+
+    const question = useTypewriter(script.question, phase === "asking", qSpeed, () =>
+        setTimeout(() => setPhase("answering"), 500)
+    );
+    const answer = useTypewriter(script.answer, phase === "answering", aSpeed, () =>
+        setTimeout(() => setPhase("scoring"), 300)
+    );
+
+    // Scoring then done, then auto-advance unless the visitor is interacting.
+    useEffect(() => {
+        if (phase !== "scoring") return;
+        const t = setTimeout(() => setPhase("done"), 1400);
+        return () => clearTimeout(t);
+    }, [phase]);
+
+    useEffect(() => {
+        if (phase !== "done" || paused) return;
+        const t = setTimeout(() => select((idx + 1) % scripts.length), 5200);
+        return () => clearTimeout(t);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [phase, paused, idx]);
+
+    // Session timer
+    useEffect(() => {
+        const t = setInterval(() => setElapsed((e) => e + 1), 1000);
+        return () => clearInterval(t);
+    }, []);
+
+    const select = (i: number) => {
+        setIdx(i);
+        setPhase("asking");
+    };
+
+    const mmss = useMemo(() => {
+        const m = Math.floor(elapsed / 60).toString().padStart(2, "0");
+        const s = (elapsed % 60).toString().padStart(2, "0");
+        return `${m}:${s}`;
+    }, [elapsed]);
+
+    const showScores = phase === "scoring" || phase === "done";
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 24, rotateX: 6 }}
+            animate={{ opacity: 1, y: 0, rotateX: 0 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.2, 0.7, 0.2, 1] }}
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onFocusCapture={() => setPaused(true)}
+            onBlurCapture={() => setPaused(false)}
+            className="relative mx-auto w-full max-w-[560px] [perspective:1200px]"
+            aria-label="Live mock interview demo"
+        >
+            <div className="surface rounded-3xl p-1.5 shadow-[0_40px_100px_-40px_rgba(0,0,0,0.9)]">
+                <div className="rounded-[1.25rem] bg-navy-950/60 ring-1 ring-white/5">
+                    {/* Title bar */}
+                    <div className="flex items-center justify-between border-b border-white/5 px-4 py-3">
+                        <div className="flex items-center gap-2">
+                            <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]/80" />
+                            <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]/80" />
+                            <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]/80" />
+                            <span className="ml-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+                                Mock interview
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-3 font-mono text-[11px] text-muted-foreground">
+                            <span className="relative flex items-center gap-1.5 text-foreground">
+                                <span className="relative grid h-2 w-2 place-items-center">
+                                    <span className="absolute h-2 w-2 rounded-full bg-red-500/70 animate-pulse-ring" />
+                                    <span className="h-2 w-2 rounded-full bg-red-500" />
+                                </span>
+                                REC
+                            </span>
+                            <span className="tabular-nums">{mmss}</span>
+                        </div>
+                    </div>
+
+                    {/* Track picker */}
+                    <div className="flex gap-1.5 overflow-x-auto px-4 pt-4 [scrollbar-width:none]" role="tablist" aria-label="Interview track">
+                        {scripts.map((s, i) => (
+                            <button
+                                key={s.id}
+                                role="tab"
+                                aria-selected={i === idx}
+                                onClick={() => select(i)}
+                                className={cn(
+                                    "relative shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors",
+                                    i === idx ? "text-navy-950" : "text-muted-foreground hover:text-foreground"
+                                )}
+                            >
+                                {i === idx && (
+                                    <motion.span
+                                        layoutId="track-pill"
+                                        className="absolute inset-0 rounded-full bg-gold"
+                                        transition={{ type: "spring", stiffness: 500, damping: 38 }}
+                                    />
+                                )}
+                                <span className="relative">{s.label}</span>
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Transcript */}
+                    <div className="space-y-4 px-4 py-5">
+                        <div className="flex gap-3">
+                            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gold/15 text-gold ring-1 ring-gold/20">
+                                <Sparkles className="h-4 w-4" />
+                            </span>
+                            <div className="min-w-0">
+                                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                                    Interviewer · {script.role}
+                                </p>
+                                <p className={cn("mt-1 text-[0.95rem] leading-relaxed text-foreground", phase === "asking" && "caret")}>
+                                    {question}
+                                </p>
+                            </div>
+                        </div>
+
+                        <AnimatePresence mode="wait">
+                            {phase !== "asking" && (
+                                <motion.div
+                                    key={script.id + "-answer"}
+                                    initial={{ opacity: 0, y: 6 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0 }}
+                                    className="flex gap-3"
+                                >
+                                    <span className="relative grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/5 text-foreground ring-1 ring-white/10">
+                                        <Mic className="h-4 w-4" />
+                                        {phase === "answering" && (
+                                            <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-gold animate-pulse" />
+                                        )}
+                                    </span>
+                                    <div className="min-w-0">
+                                        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                                            You · {phase === "answering" ? "listening" : "transcript"}
+                                        </p>
+                                        <p className={cn("mt-1 text-[0.95rem] leading-relaxed text-muted-foreground", phase === "answering" && "caret")}>
+                                            {answer}
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+
+                    {/* Scores + tip */}
+                    <div className="border-t border-white/5 px-4 py-4">
+                        <div className="grid grid-cols-3 gap-4">
+                            <Meter label="Clarity" value={script.scores.clarity} show={showScores} delay={0} />
+                            <Meter label="Structure" value={script.scores.structure} show={showScores} delay={0.15} />
+                            <Meter label="Confidence" value={script.scores.confidence} show={showScores} delay={0.3} />
+                        </div>
+                        <div className="mt-4 min-h-[2.5rem]">
+                            <AnimatePresence mode="wait">
+                                {phase === "done" ? (
+                                    <motion.p
+                                        key={script.id + "-tip"}
+                                        initial={{ opacity: 0, y: 4 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0 }}
+                                        className="rounded-lg border border-gold/20 bg-gold/[0.07] px-3 py-2 text-sm text-foreground"
+                                    >
+                                        <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.18em] text-gold">AI feedback</span>
+                                        {script.tip}
+                                    </motion.p>
+                                ) : (
+                                    <motion.p
+                                        key="waiting"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="px-1 font-mono text-[11px] text-muted-foreground"
+                                    >
+                                        {phase === "scoring" ? "Scoring your answer…" : "Feedback appears after your answer."}
+                                    </motion.p>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Floating note */}
+            <motion.div
+                animate={reduce ? undefined : { y: [0, -6, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="surface-glass absolute -bottom-5 -left-4 hidden items-center gap-3 rounded-2xl px-4 py-3 sm:flex"
+            >
+                <span className="grid h-8 w-8 place-items-center rounded-lg bg-gold text-navy-950">
+                    <Mic className="h-4 w-4" />
+                </span>
+                <div className="text-xs">
+                    <p className="font-semibold text-foreground">Works with your microphone</p>
+                    <p className="text-muted-foreground">Or type if you prefer.</p>
+                </div>
+            </motion.div>
+        </motion.div>
     );
 };

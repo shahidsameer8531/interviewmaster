@@ -25,7 +25,7 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="bg-[#1a1a1a] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl"
+          className="bg-navy-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl"
         >
           {/* Header */}
           <div className="p-6 border-b border-white/10 flex items-start justify-between">
@@ -62,7 +62,7 @@ export const QuestionModal: React.FC<QuestionModalProps> = ({
                   {question.category}
                 </span>
                 {question.company && (
-                  <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-sm font-medium">
+                  <span className="px-3 py-1 rounded-full bg-purple-500/20 text-gold text-sm font-medium">
                     {question.company}
                   </span>
                 )}

@@ -27,7 +27,7 @@ const topics: Topic[] = [
     title: 'Logical Reasoning',
     description: 'Enhance your analytical and critical thinking skills',
     icon: Brain,
-    color: 'bg-purple-500/10 text-purple-400',
+    color: 'bg-purple-500/10 text-gold',
     questions: 200,
     avgTime: '25 min',
   },

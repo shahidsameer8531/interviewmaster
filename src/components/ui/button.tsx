@@ -5,25 +5,32 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "group/btn relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold tracking-tight transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:translate-y-px [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        // Gold is reserved for the main action on a screen.
+        default:
+          "bg-primary text-primary-foreground shadow-[0_8px_24px_-10px_rgba(252,186,40,0.6)] hover:bg-gold-soft hover:shadow-[0_10px_30px_-8px_rgba(252,186,40,0.7)] hover:-translate-y-0.5",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "border border-border bg-transparent text-foreground hover:border-gold/60 hover:bg-gold/5 hover:text-gold",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+          "bg-secondary text-secondary-foreground hover:bg-navy-600",
+        ghost:
+          "text-muted-foreground hover:bg-white/5 hover:text-foreground",
+        link:
+          "text-gold underline-offset-4 hover:underline",
+        glass:
+          "surface-glass text-foreground hover:border-gold/40 hover:bg-navy-800/80",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
+        default: "h-11 px-5",
+        sm: "h-9 rounded-lg px-3.5 text-xs",
+        lg: "h-12 rounded-xl px-7 text-base",
+        xl: "h-14 rounded-2xl px-8 text-base",
+        icon: "h-10 w-10 rounded-lg",
       },
     },
     defaultVariants: {

@@ -181,7 +181,7 @@ export default function ProfessionalWriterPage() {
               <Filter className="w-5 h-5" />
               <span>Specialties</span>
             </button>
-            <div className="absolute right-0 mt-2 w-64 bg-gray-900 rounded-lg shadow-xl border border-white/10 p-4 hidden group-hover:block">
+            <div className="absolute right-0 mt-2 w-64 bg-navy-800 rounded-lg shadow-xl border border-white/10 p-4 hidden group-hover:block">
               <div className="space-y-2">
                 {allSpecialties.map((specialty) => (
                   <label key={specialty} className="flex items-center gap-2">

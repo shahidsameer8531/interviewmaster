@@ -250,7 +250,7 @@ const topicIcons = {
 
 const topicColors = {
   'numerical': 'bg-blue-500/10 text-blue-400',
-  'logical': 'bg-purple-500/10 text-purple-400',
+  'logical': 'bg-purple-500/10 text-gold',
   'verbal': 'bg-yellow-500/10 text-yellow-400',
   'data-interpretation': 'bg-green-500/10 text-green-400',
   'quantitative': 'bg-red-500/10 text-red-400',

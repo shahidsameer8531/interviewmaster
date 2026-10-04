@@ -71,7 +71,7 @@ export function TargetCompanyInput({ onCompanySelect }: TargetCompanyInputProps)
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search for a company..."
-            className="pl-10 bg-gray-800/50 border-[#fcba28]/20 text-white placeholder:text-gray-400"
+            className="pl-10 bg-navy-700/50 border-[#fcba28]/20 text-white placeholder:text-gray-400"
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#fcba28]" />
         </div>
@@ -91,7 +91,7 @@ export function TargetCompanyInput({ onCompanySelect }: TargetCompanyInputProps)
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="absolute z-10 w-full max-h-60 overflow-y-auto bg-gray-900/95 backdrop-blur-xl border border-[#fcba28]/20 rounded-lg shadow-xl"
+          className="absolute z-10 w-full max-h-60 overflow-y-auto bg-navy-800/95 backdrop-blur-xl border border-[#fcba28]/20 rounded-lg shadow-xl"
         >
           {companies.map((company, index) => (
             <motion.div
@@ -118,7 +118,7 @@ export function TargetCompanyInput({ onCompanySelect }: TargetCompanyInputProps)
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="p-4 bg-gray-800/50 rounded-lg border border-[#fcba28]/20"
+          className="p-4 bg-navy-700/50 rounded-lg border border-[#fcba28]/20"
         >
           <div className="flex items-center gap-3">
             <Building className="h-5 w-5 text-[#fcba28]" />

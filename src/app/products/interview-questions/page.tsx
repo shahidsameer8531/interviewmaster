@@ -41,7 +41,7 @@ const InterviewQuestions: React.FC = () => {
   const difficulties = ['All', 'Easy', 'Medium', 'Hard'];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-8">
+    <div className="min-h-screen bg-navy-950 text-white p-8">
       {/* Header */}
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold mb-2">Interview Questions</h1>

@@ -71,7 +71,7 @@ const InterviewAnimation = () => {
                     }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
-                    <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
+                    <div className="w-full h-full rounded-full bg-navy-950 flex items-center justify-center">
                       <span className="text-2xl">🤖</span>
                     </div>
                   </motion.div>
@@ -121,7 +121,7 @@ const InterviewAnimation = () => {
                     }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
-                    <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
+                    <div className="w-full h-full rounded-full bg-navy-950 flex items-center justify-center">
                       <span className="text-2xl">👤</span>
                     </div>
                   </motion.div>

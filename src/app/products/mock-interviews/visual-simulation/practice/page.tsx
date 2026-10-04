@@ -36,7 +36,7 @@ export default function PracticePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] text-white p-6">
+    <div className="min-h-screen bg-navy-800 text-white p-6">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Panel - Question List */}

@@ -110,7 +110,7 @@ export function ResumeUpload({ onUpload }: ResumeUploadProps) {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg border border-[#fcba28]/20"
+          className="flex items-center justify-between p-4 bg-navy-700/50 rounded-lg border border-[#fcba28]/20"
         >
           <div className="flex items-center space-x-3">
             <File className="h-5 w-5 text-[#fcba28]" />
