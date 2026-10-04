@@ -17,6 +17,27 @@ export const currentUser = query({
 });
 
 /**
+ * Whether a password account exists for this email. Used by the sign-up form
+ * to say "an account already exists" instead of a generic failure, because
+ * the Next.js auth proxy hides the server's error from the browser.
+ */
+export const emailTaken = query({
+    args: { email: v.string() },
+    handler: async (ctx, { email }) => {
+        // The provider stores the address as typed, so check both spellings.
+        const candidates = Array.from(new Set([email.trim(), email.trim().toLowerCase()]));
+        for (const id of candidates) {
+            const account = await ctx.db
+                .query("authAccounts")
+                .withIndex("providerAndAccountId", (q) => q.eq("provider", "password").eq("providerAccountId", id))
+                .first();
+            if (account) return true;
+        }
+        return false;
+    },
+});
+
+/**
  * Save the Prep Room target (role, company, level, loop date).
  * planStartedAt is set the first time a target is saved and kept afterwards,
  * so "Day n of your plan" counts from the first save.

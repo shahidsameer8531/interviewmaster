@@ -5,7 +5,8 @@
   "private": true,
   "author": "Sameer",
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
+    "dev:https": "next dev -H 0.0.0.0 -p 3000 --experimental-https --experimental-https-key .certs/dev-key.pem --experimental-https-cert .certs/dev-cert.pem",
     "lint": "next lint",
     "build": "next build",
     "start": "next start",

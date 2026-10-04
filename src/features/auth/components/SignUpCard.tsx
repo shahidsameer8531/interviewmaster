@@ -22,6 +22,10 @@ import { Logo } from "@/components/Logo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { OAUTH_PROVIDERS } from "@/features/auth/lib/oauth-providers";
+import { EMAIL_PATTERN, MESSAGES, MIN_PASSWORD_LENGTH, classifySignInError, clearGuestCookie } from "@/features/auth/lib/sign-in-errors";
+import { useConvex } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
 
 interface SignUpCardProps {
     /** Where to go after a successful sign-in. */
@@ -33,6 +37,7 @@ interface SignUpCardProps {
 export const SignUpCard = ({ setState, onClose, redirectTo = "/dashboard" }: SignUpCardProps) => {
     const router = useRouter();
   const { signIn } = useAuthActions();
+  const convex = useConvex();
   const [account, setAccount] = useState({
     name: "",
     email: "",
@@ -55,19 +60,67 @@ export const SignUpCard = ({ setState, onClose, redirectTo = "/dashboard" }: Sig
       return;
     }
 
+    if (!EMAIL_PATTERN.test(account.email.trim())) {
+      setError(MESSAGES.invalidEmail);
+      return;
+    }
+
+    if (account.password.length < MIN_PASSWORD_LENGTH) {
+      setError(MESSAGES.shortPassword);
+      return;
+    }
+
     setPending(true);
+    setError(null);
+    const email = account.email.trim();
+
+    // The proxy hides the server's reason, so the one case we can name is
+    // looked up directly: does a password account already exist for this email?
+    const explainRejection = async () => {
+      try {
+        const taken = await convex.query(api.users.emailTaken, { email });
+        setError(taken ? MESSAGES.signUpExists : MESSAGES.signUpRejected);
+      } catch {
+        setError(MESSAGES.signUpRejected);
+      }
+    };
+
     try {
-      await signIn("password", {
+      const result = await signIn("password", {
         name: account.name.trim(),
-        email: account.email.trim(),
+        email,
         password: account.password,
         flow: "signUp",
       });
-      setError(null);
+      if (!result.signingIn) {
+        await explainRejection();
+        return;
+      }
+      clearGuestCookie();
       router.push(redirectTo);
     } catch (err) {
       console.error("Signup error:", err);
-      setError("Failed to create account. Please try again.");
+      if (classifySignInError(err) === "network") {
+        setError(MESSAGES.network);
+      } else {
+        await explainRejection();
+      }
+    } finally {
+      setPending(false);
+    }
+  };
+
+  const startOAuth = async (provider: "google" | "github") => {
+    setPending(true);
+    setError(null);
+    try {
+      const result = await signIn(provider, { redirectTo });
+      if (!result.signingIn && !result.redirect) {
+        setError(`Couldn't start ${provider === "google" ? "Google" : "GitHub"} sign-in. Try again.`);
+      }
+    } catch (err) {
+      console.error("OAuth error:", err);
+      setError(classifySignInError(err) === "network" ? MESSAGES.network : `Couldn't start ${provider === "google" ? "Google" : "GitHub"} sign-in. Try again.`);
     } finally {
       setPending(false);
     }
@@ -143,39 +196,47 @@ export const SignUpCard = ({ setState, onClose, redirectTo = "/dashboard" }: Sig
           </Button>
         </form>
 
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-white/10" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="px-2 bg-background text-muted-foreground">
-              Or continue with
-            </span>
-          </div>
-        </div>
+        {OAUTH_PROVIDERS.length > 0 && (
+          <>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-white/10" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="px-2 bg-background text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => signIn("google", { redirectTo })}
-            disabled={pending}
-            className="h-10 text-sm bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
-          >
-            <FcGoogle className="h-4 w-4 mr-2" />
-            Google
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => signIn("github", { redirectTo })}
-            disabled={pending}
-            className="h-10 text-sm bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
-          >
-            <FaGithub className="h-4 w-4 mr-2" />
-            GitHub
-          </Button>
-        </div>
+            <div className={OAUTH_PROVIDERS.length === 2 ? "grid grid-cols-2 gap-3" : "grid gap-3"}>
+              {OAUTH_PROVIDERS.includes("google") && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => startOAuth("google")}
+                  disabled={pending}
+                  className="h-10 text-sm bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                >
+                  <FcGoogle className="h-4 w-4 mr-2" />
+                  Google
+                </Button>
+              )}
+              {OAUTH_PROVIDERS.includes("github") && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => startOAuth("github")}
+                  disabled={pending}
+                  className="h-10 text-sm bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                >
+                  <FaGithub className="h-4 w-4 mr-2" />
+                  GitHub
+                </Button>
+              )}
+            </div>
+          </>
+        )}
 
         <div className="text-center">
           <p className="text-sm text-muted-foreground">
