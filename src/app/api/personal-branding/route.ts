@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
+import { GEMINI_MODEL } from "@/lib/gemini-model";
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || "");
 
@@ -30,7 +31,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+    const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
 
     const prompt = `
     Act as an expert personal branding consultant. Analyze the following professional profile and provide detailed branding recommendations. Format your response as a valid JSON object with the structure shown below.

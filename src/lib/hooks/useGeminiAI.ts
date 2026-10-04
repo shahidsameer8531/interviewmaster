@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GEMINI_MODEL } from "@/lib/gemini-model";
 
 export function useGeminiAI() {
   const [error, setError] = useState<string | null>(null);
@@ -11,7 +12,7 @@ export function useGeminiAI() {
   ): Promise<string> => {
     try {
       const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+      const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
 
       const fullPrompt = `${systemPrompt}\n\nContext:\n${context}\n\nUser: ${prompt}`;
       

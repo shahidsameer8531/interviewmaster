@@ -1,11 +1,12 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GEMINI_MODEL } from "@/lib/gemini-model";
 
 export class GeminiService {
   private model: any;
 
   constructor() {
     const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
-    this.model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+    this.model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
   }
 
   async analyzeInterviewAnswer(question: string, answer: string) {

@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GEMINI_MODEL } from "@/lib/gemini-model";
 
 // Initialize Gemini AI with your API key
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
@@ -29,7 +30,7 @@ export async function parseResumeWithGemini(resumeText: string): Promise<ParsedR
     }
 
     // Get the generative model
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+    const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
 
     // Create a structured prompt for resume parsing
     const prompt = `

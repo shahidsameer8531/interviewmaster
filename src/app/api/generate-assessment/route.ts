@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GEMINI_MODEL } from "@/lib/gemini-model";
 
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
@@ -7,7 +8,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 export async function POST(req: Request) {
   try {
     const settings = await req.json();
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+    const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
 
     // Create a prompt based on settings
     const prompt = `Generate a ${settings.difficulty} difficulty assessment with ${settings.questionsCount} questions for these topics: ${settings.topics.join(', ')}.

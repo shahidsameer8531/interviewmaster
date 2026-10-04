@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GEMINI_MODEL } from "@/lib/gemini-model";
 
 // Initialize the Gemini API with your API key
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
@@ -28,7 +29,7 @@ export async function analyzeWithGemini(
   level: string
 ): Promise<DetailedFeedback> {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+    const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
 
     const prompt = `As an expert technical interviewer for ${role} positions, analyze this ${type} interview response for a ${level} position:
 

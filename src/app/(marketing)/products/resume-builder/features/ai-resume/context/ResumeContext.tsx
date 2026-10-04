@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GEMINI_MODEL } from "@/lib/gemini-model";
 
 // Types
 export interface PersonalInfo {
@@ -172,7 +173,7 @@ export const ResumeProvider = ({ children }: { children: ReactNode }) => {
 
   const analyzeResume = async () => {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+      const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
       const prompt = `Analyze this resume and provide feedback:
       ${JSON.stringify(resumeData, null, 2)}`;
 

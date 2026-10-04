@@ -1,5 +1,7 @@
 import { GoogleGenerativeAI, type GenerationConfig } from "@google/generative-ai";
 
+import { GEMINI_MODEL } from "@/lib/gemini-model";
+
 /**
  * Server-side Gemini access for the Prep Room routes.
  *
@@ -17,11 +19,7 @@ export class GeminiNotConfiguredError extends Error {
   }
 }
 
-/**
- * gemini-2.0-flash was shut down on 1 June 2026, so the default is the
- * current flash model. GEMINI_MODEL overrides it.
- */
-export const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
+export { GEMINI_MODEL };
 // Logged once when the server first loads this module.
 console.info(`[gemini] using model ${GEMINI_MODEL}${process.env.GEMINI_MODEL ? " (from GEMINI_MODEL)" : " (default)"}`);
 

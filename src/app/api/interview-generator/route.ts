@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { InterviewQuestion, InterviewResult, UserInput } from '@/app/(marketing)/products/interview-generator/types';
 import { v4 as uuidv4 } from 'uuid';
+import { GEMINI_MODEL } from "@/lib/gemini-model";
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
 
@@ -100,7 +101,7 @@ Format as JSON array:
 export async function POST(request: Request) {
   try {
     const userInput: UserInput = await request.json();
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+    const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
 
     // Generate questions in smaller batches with retries
     const batches = await Promise.all([
