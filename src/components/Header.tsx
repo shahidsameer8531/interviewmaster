@@ -71,8 +71,10 @@ export const Header = () => {
         <nav ref={navRef} className="flex h-[72px] items-center gap-6" aria-label="Primary">
           <Logo className="shrink-0" />
 
-          {/* Desktop navigation */}
-          <ul className="hidden flex-1 items-center justify-center gap-1 lg:flex" role="menubar">
+          {/* Desktop navigation. Shown from xl: at lg widths the logo, five menu
+              items and the two actions add up to about 1170px, wider than the
+              960px available, so the row overflowed and the page scrolled sideways. */}
+          <ul className="hidden flex-1 items-center justify-center gap-1 xl:flex" role="menubar">
             {navigationSections.map((section, idx) => {
               const active = open === idx;
               const current = isActiveSection(section.href);
@@ -165,7 +167,7 @@ export const Header = () => {
           </ul>
 
           {/* Actions */}
-          <div className="ml-auto hidden items-center gap-2 lg:flex">
+          <div className="ml-auto hidden items-center gap-2 xl:flex">
             <AuthLoading>
               <UserButtonLoading />
             </AuthLoading>
@@ -185,7 +187,7 @@ export const Header = () => {
             </Authenticated>
           </div>
 
-          <div className="ml-auto flex items-center gap-2 lg:hidden">
+          <div className="ml-auto flex items-center gap-2 xl:hidden">
             <Authenticated>
               <UserButton />
             </Authenticated>
