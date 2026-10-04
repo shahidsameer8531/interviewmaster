@@ -3,8 +3,13 @@ import { internal } from "./_generated/api";
 import { GenericActionCtx } from "convex/server";
 import { DataModel } from "./_generated/dataModel";
 import { PublicHttpAction } from "convex/server";
+import { auth } from "./auth";
 
 const http = httpRouter();
+
+// Convex Auth needs these routes (/.well-known/jwks.json, OAuth callbacks)
+// or the deployment cannot verify its own sign-in tokens.
+auth.addHttpRoutes(http);
 
 const stripeHandler: PublicHttpAction = Object.assign(
     async (ctx: GenericActionCtx<DataModel>, request: Request) => {
