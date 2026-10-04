@@ -1,5 +1,8 @@
 "use client";
+
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { AuthFlow } from "@/features/auth/lib/types";
 import { useAuthActions } from "@convex-dev/auth/react";
 
@@ -21,11 +24,14 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 interface SignUpCardProps {
+    /** Where to go after a successful sign-in. */
+    redirectTo?: string;
   setState: (state: AuthFlow) => void;
   onClose: () => void;
 }
 
-export const SignUpCard = ({ setState, onClose }: SignUpCardProps) => {
+export const SignUpCard = ({ setState, onClose, redirectTo = "/dashboard" }: SignUpCardProps) => {
+    const router = useRouter();
   const { signIn } = useAuthActions();
   const [account, setAccount] = useState({
     name: "",
@@ -58,6 +64,7 @@ export const SignUpCard = ({ setState, onClose }: SignUpCardProps) => {
         flow: "signUp",
       });
       setError(null);
+      router.push(redirectTo);
     } catch (err) {
       console.error("Signup error:", err);
       setError("Failed to create account. Please try again.");
@@ -151,7 +158,7 @@ export const SignUpCard = ({ setState, onClose }: SignUpCardProps) => {
           <Button
             type="button"
             variant="outline"
-            onClick={() => signIn("google")}
+            onClick={() => signIn("google", { redirectTo })}
             disabled={pending}
             className="h-10 text-sm bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
           >
@@ -161,7 +168,7 @@ export const SignUpCard = ({ setState, onClose }: SignUpCardProps) => {
           <Button
             type="button"
             variant="outline"
-            onClick={() => signIn("github")}
+            onClick={() => signIn("github", { redirectTo })}
             disabled={pending}
             className="h-10 text-sm bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
           >

@@ -9,6 +9,7 @@ export async function clearAuthCookies() {
     cookieStore.delete('bypass_auth');
     cookieStore.delete('user-session');
     cookieStore.delete('convex-auth');
+    cookieStore.delete('userStatus'); // guest access
     
     // Add any other auth-related cookies that need to be cleared
 }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AuthFlow } from "@/features/auth/lib/types";
+import { safeRedirectPath } from "@/features/auth/lib/safe-redirect";
 import { SignInCard } from "./SignInCard";
 import { SignUpCard } from "./SignUpCard";
 import { Button } from "@/components/ui/button";
@@ -48,7 +49,13 @@ export const AuthScreen = ({ onClose }: AuthScreenProps) => {
   const [authFlow, setAuthFlow] = useState<AuthFlow>("signIn");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams?.get("callbackUrl") || "/";
+  // Where to go once signed in. Parsed against this origin; anything
+  // cross-origin falls back to the app.
+  const rawCallback = searchParams?.get("callbackUrl");
+  const [callbackUrl, setCallbackUrl] = useState("/dashboard");
+  useEffect(() => {
+    setCallbackUrl(safeRedirectPath(rawCallback, window.location.origin));
+  }, [rawCallback]);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -61,15 +68,16 @@ export const AuthScreen = ({ onClose }: AuthScreenProps) => {
     return () => document.removeEventListener("keydown", down);
   }, [onClose]);
 
-  const handleContinueWithoutLogin = () => {
-    document.cookie = "bypass_auth=true; path=/; max-age=7200";
+  const handleContinueAsGuest = () => {
+    // The middleware reads this cookie; localStorage alone never let guests in.
+    document.cookie = "userStatus=guest; path=/; max-age=2592000; SameSite=Lax";
+    try {
+      localStorage.setItem("userStatus", "guest");
+    } catch {
+      /* storage blocked; the cookie is enough */
+    }
     if (onClose) onClose();
     router.push(callbackUrl);
-  };
-
-  const handleContinueAsGuest = () => {
-    localStorage.setItem('userStatus', 'guest');
-    router.push('/');
   };
 
   return (
@@ -93,11 +101,17 @@ export const AuthScreen = ({ onClose }: AuthScreenProps) => {
         >
           <AnimatePresence mode="wait" initial={false}>
             {authFlow === "signIn" ? (
-              <SignInCard key="signin" setState={setAuthFlow} onClose={onClose} />
+              <SignInCard key="signin" setState={setAuthFlow} onClose={onClose} redirectTo={callbackUrl} />
             ) : (
-              <SignUpCard key="signup" setState={setAuthFlow} onClose={onClose} />
+              <SignUpCard key="signup" setState={setAuthFlow} onClose={onClose} redirectTo={callbackUrl} />
             )}
           </AnimatePresence>
+          {/* Guest entry. The middleware lets guests into the app through the cookie set here. */}
+          <div className="mt-3 flex items-center justify-center">
+            <Button type="button" variant="ghost" size="sm" onClick={handleContinueAsGuest}>
+              Continue as a guest
+            </Button>
+          </div>
         </motion.div>
       </div>
     </div>

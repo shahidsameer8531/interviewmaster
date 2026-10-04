@@ -12,6 +12,7 @@ import { appNavigation, isActivePath } from "./app-navigation";
 import { useCurrentUser } from "@/features/auth/api/useCurrentUser";
 import { UserButton } from "@/features/auth/components/UserButton";
 import { UserButtonLoading } from "@/features/auth/components/UserButtonLoading";
+import { useTarget } from "@/features/app-data/hooks";
 
 export type SidebarTarget = {
   role?: string | null;
@@ -20,15 +21,27 @@ export type SidebarTarget = {
   loopDate?: string | null;
   /** ISO date the plan started; drives "Day n of your N-day plan". */
   planStartedAt?: string | null;
-  planDays?: number;
 };
 
+const DAY = 86_400_000;
+const startOfDay = (t: number) => {
+  const d = new Date(t);
+  d.setHours(0, 0, 0, 0);
+  return d.getTime();
+};
+
+/**
+ * The plan runs from the day the target was first saved to the loop date.
+ * Without a loop date there is no plan length, so nothing is shown.
+ */
 const dayOfPlan = (t: SidebarTarget) => {
-  if (!t.planStartedAt) return null;
-  const start = new Date(t.planStartedAt).getTime();
-  if (Number.isNaN(start)) return null;
-  const days = t.planDays ?? 21;
-  const day = Math.min(days, Math.max(1, Math.floor((Date.now() - start) / 86_400_000) + 1));
+  if (!t.planStartedAt || !t.loopDate) return null;
+  const start = startOfDay(new Date(t.planStartedAt).getTime());
+  const loop = startOfDay(new Date(`${t.loopDate}T00:00:00`).getTime());
+  if (Number.isNaN(start) || Number.isNaN(loop)) return null;
+  const days = Math.round((loop - start) / DAY) + 1;
+  if (days < 1) return null;
+  const day = Math.min(days, Math.max(1, Math.floor((startOfDay(Date.now()) - start) / DAY) + 1));
   return { day, days };
 };
 
@@ -94,9 +107,13 @@ const TargetCard = ({ target, compact }: { target?: SidebarTarget | null; compac
 /**
  * The app's navigation column. `compact` is the 76px icon rail.
  */
-export const AppSidebar = ({ compact = false, target }: { compact?: boolean; target?: SidebarTarget | null }) => {
+export const AppSidebar = ({ compact = false }: { compact?: boolean }) => {
   const pathname = usePathname();
   const { user } = useCurrentUser();
+  const { target: saved } = useTarget();
+  const target: SidebarTarget | null = saved
+    ? { role: saved.targetRole, company: saved.targetCompany, loopDate: saved.loopDate, planStartedAt: saved.planStartedAt ? new Date(saved.planStartedAt).toISOString() : null }
+    : null;
 
   return (
     <aside

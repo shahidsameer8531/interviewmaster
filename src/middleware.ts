@@ -1,7 +1,7 @@
+import { NextResponse } from "next/server";
 import {
     createRouteMatcher,
     isAuthenticatedNextjs,
-    nextjsMiddlewareRedirect,
     convexAuthNextjsMiddleware,
 } from "@convex-dev/auth/nextjs/server";
 
@@ -43,7 +43,12 @@ export default convexAuthNextjsMiddleware((req) => {
         const isAuthenticated = isAuthenticatedNextjs();
 
         if (!isAuthenticated && !isGuest) {
-            return nextjsMiddlewareRedirect(req, "/auth");
+            // nextjsMiddlewareRedirect treats its argument as a pathname and
+            // would encode the "?", so the URL is built here instead.
+            const url = req.nextUrl.clone();
+            url.search = `?callbackUrl=${encodeURIComponent(req.nextUrl.pathname + req.nextUrl.search)}`;
+            url.pathname = "/auth";
+            return NextResponse.redirect(url);
         }
     }
 

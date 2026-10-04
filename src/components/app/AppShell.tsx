@@ -1,10 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { AppSidebar, type SidebarTarget } from "./AppSidebar";
+import { AppSidebar } from "./AppSidebar";
 import { shellVariantFor, type ShellVariant } from "./app-navigation";
+import { useAppUser } from "@/features/app-data/hooks";
+import { SearchProvider } from "./search-context";
 
 /**
  * The Prep Room layout. A wrapping flex row: the sidebar is `flex: 1 1 240px`
@@ -17,39 +20,66 @@ import { shellVariantFor, type ShellVariant } from "./app-navigation";
  */
 export const AppShell = ({
   variant,
-  target,
   children,
 }: {
   variant?: ShellVariant;
-  target?: SidebarTarget | null;
   children: React.ReactNode;
 }) => {
   const pathname = usePathname();
   const v = variant ?? shellVariantFor(pathname);
+  const { isGuest } = useAppUser();
 
   return (
-    <div data-app-root className="flex min-h-screen flex-wrap font-sans text-app-body">
-      <a
-        href="#app-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-app-control focus:bg-app-gold focus:px-3 focus:py-2 focus:text-app-ui focus:text-app-bg"
+    <SearchProvider shortcut={v === "sidebar"}>
+      <div
+        data-app-root
+        className="flex min-h-screen flex-wrap font-sans text-app-body"
       >
-        Skip to content
-      </a>
+        <a
+          href="#app-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-app-control focus:bg-app-gold focus:px-3 focus:py-2 focus:text-app-ui focus:text-app-bg"
+        >
+          Skip to content
+        </a>
 
-      {v !== "focus" && (
-        <div style={{ flex: v === "rail" ? "1 1 76px" : "1 1 240px" }} className="min-w-0">
-          <AppSidebar compact={v === "rail"} target={target} />
-        </div>
-      )}
+        {v !== "focus" && (
+          <div
+            style={{ flex: v === "rail" ? "1 1 76px" : "1 1 240px" }}
+            className="min-w-0"
+          >
+            <AppSidebar compact={v === "rail"} />
+          </div>
+        )}
 
-      <main
-        id="app-content"
-        tabIndex={-1}
-        style={{ flex: "999 1 560px", minWidth: 0 }}
-        className={cn("px-[clamp(16px,3vw,40px)]", v === "focus" ? "py-4" : "py-6 lg:py-8")}
-      >
-        {children}
-      </main>
-    </div>
+        <main
+          id="app-content"
+          tabIndex={-1}
+          style={{ flex: "999 1 560px", minWidth: 0 }}
+          className={cn(
+            "px-[clamp(16px,3vw,40px)]",
+            v === "focus" ? "py-4" : "py-6 lg:py-8",
+          )}
+        >
+          {isGuest && v !== "focus" && (
+            <p
+              role="status"
+              className="mx-auto mb-5 flex max-w-6xl flex-wrap items-center justify-between gap-2 rounded-app-control border border-app-line bg-app-sidebar px-4 py-2.5 text-app-small text-app-ink-2"
+            >
+              <span>
+                Sign in to keep your history. As a guest, it stays in this
+                browser only.
+              </span>
+              <Link
+                href={`/auth?callbackUrl=${encodeURIComponent(pathname ?? "/dashboard")}`}
+                className="font-semibold text-app-sky-text hover:underline"
+              >
+                Sign in
+              </Link>
+            </p>
+          )}
+          {children}
+        </main>
+      </div>
+    </SearchProvider>
   );
 };

@@ -1,19 +1,12 @@
 import { v } from "convex/values";
 import { PRODUCT_TYPE } from "./schema";
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { internalMutation, query } from "./_generated/server";
+import { internalMutation, mutation, query } from "./_generated/server";
 
 /**
  * Query current authenticated user's data
- * 
+ *
  * @returns User object if authenticated, null otherwise
- * @example
- * ```ts
- * const user = await ctx.db.query(api.users.currentUser);
- * if (!user) {
- *   // Handle unauthenticated state
- * }
- * ```
  */
 export const currentUser = query({
     handler: async (ctx, _args) => {
@@ -24,14 +17,32 @@ export const currentUser = query({
 });
 
 /**
+ * Save the Prep Room target (role, company, level, loop date).
+ * planStartedAt is set the first time a target is saved and kept afterwards,
+ * so "Day n of your plan" counts from the first save.
+ */
+export const updateTarget = mutation({
+    args: {
+        targetRole: v.optional(v.string()),
+        targetCompany: v.optional(v.string()),
+        targetLevel: v.optional(v.string()),
+        loopDate: v.optional(v.string()),
+    },
+    handler: async (ctx, args) => {
+        const userId = await getAuthUserId(ctx);
+        if (userId === null) throw new Error("Not signed in");
+        const user = await ctx.db.get(userId);
+        await ctx.db.patch(userId, {
+            ...args,
+            planStartedAt: user?.planStartedAt ?? Date.now(),
+        });
+        return userId;
+    },
+});
+
+/**
  * Update user details after successful purchase
  * Internal mutation called by stripe webhook handler
- * 
- * @param userId - User's ID
- * @param productType - Type of product purchased
- * @param selectedTemplate - Optional template selection
- * 
- * @returns Updated user ID
  */
 export const updateUserAfterPurchase = internalMutation({
     args: {
@@ -44,7 +55,7 @@ export const updateUserAfterPurchase = internalMutation({
         productType,
         selectedTemplate,
     }) => {
-        const updates: any = {};
+        const updates: Record<string, unknown> = {};
         if (productType === "Premium Kit") {
             updates.hasPurchasedPremium = true;
         } else if (productType === "Starter Kit") {

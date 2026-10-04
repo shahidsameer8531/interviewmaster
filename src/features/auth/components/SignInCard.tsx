@@ -1,4 +1,6 @@
 "use client";
+
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AuthFlow } from "@/features/auth/lib/types";
 import { useAuthActions } from "@convex-dev/auth/react";
@@ -22,11 +24,14 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 interface SignInCardProps {
+    /** Where to go after a successful sign-in. */
+    redirectTo?: string;
     setState: (state: AuthFlow) => void;
     onClose: () => void;
 }
 
-export const SignInCard = ({ setState, onClose }: SignInCardProps) => {
+export const SignInCard = ({ setState, onClose, redirectTo = "/dashboard" }: SignInCardProps) => {
+    const router = useRouter();
     const { signIn } = useAuthActions();
     const [pending, setPending] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -49,6 +54,7 @@ export const SignInCard = ({ setState, onClose }: SignInCardProps) => {
                 flow: "signIn",
             });
             setError(null);
+            router.push(redirectTo);
         } catch (err) {
             console.error("Sign in error:", err);
             setError("Invalid credentials. Please try again.");
@@ -128,7 +134,7 @@ export const SignInCard = ({ setState, onClose }: SignInCardProps) => {
                     <Button
                         type="button"
                         variant="outline"
-                        onClick={() => signIn("google")}
+                        onClick={() => signIn("google", { redirectTo })}
                         disabled={pending}
                         className="h-10 text-sm bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
                     >
@@ -138,7 +144,7 @@ export const SignInCard = ({ setState, onClose }: SignInCardProps) => {
                     <Button
                         type="button"
                         variant="outline"
-                        onClick={() => signIn("github")}
+                        onClick={() => signIn("github", { redirectTo })}
                         disabled={pending}
                         className="h-10 text-sm bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
                     >
@@ -149,7 +155,7 @@ export const SignInCard = ({ setState, onClose }: SignInCardProps) => {
 
                 <div className="text-center">
                     <p className="text-sm text-muted-foreground">
-                        Don't have an account?{" "}
+                        Don&apos;t have an account?{" "}
                         <button
                             type="button"
                             onClick={() => setState("signUp")}

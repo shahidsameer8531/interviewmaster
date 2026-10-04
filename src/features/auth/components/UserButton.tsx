@@ -38,6 +38,7 @@ export const UserButton = () => {
             await clearAuthCookies();
             // Clear client-side state
             localStorage.removeItem('user-session');
+            localStorage.removeItem('userStatus');
             // Navigate and refresh
             router.push('/');
             router.refresh();
