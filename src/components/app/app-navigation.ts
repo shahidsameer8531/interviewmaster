@@ -58,8 +58,6 @@ export type ShellVariant = "sidebar" | "rail" | "focus";
  */
 export function shellVariantFor(pathname: string | null): ShellVariant {
   if (!pathname) return "sidebar";
-  if (pathname === "/dashboard/dev-kit/rail") return "rail";
-  if (pathname === "/dashboard/dev-kit/focus") return "focus";
   if (/^\/dashboard\/interview\/[^/]+$/.test(pathname) && !pathname.endsWith("/new")) return "focus";
   if (/^\/dashboard\/resume\/[^/]+$/.test(pathname)) return "rail";
   return "sidebar";

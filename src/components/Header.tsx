@@ -175,12 +175,12 @@ export const Header = () => {
               <Button variant="ghost" size="sm" onClick={() => router.push('/auth')}>
                 Sign in
               </Button>
-              <Button size="sm" onClick={() => router.push('/products/mock-interviews')}>
+              <Button size="sm" onClick={() => router.push('/dashboard/interview/new')}>
                 Start a mock interview
               </Button>
             </Unauthenticated>
             <Authenticated>
-              <Button size="sm" variant="outline" onClick={() => router.push('/products/mock-interviews')}>
+              <Button size="sm" variant="outline" onClick={() => router.push('/dashboard/interview/new')}>
                 Practise
               </Button>
               <UserButton />

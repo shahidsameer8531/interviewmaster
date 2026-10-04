@@ -28,7 +28,7 @@ export const CTA = () => (
                         </p>
                         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                             <Button size="xl" asChild>
-                                <Link href="/products/mock-interviews">
+                                <Link href="/dashboard/interview/new">
                                     Start a mock interview <ArrowRight className="h-4 w-4" />
                                 </Link>
                             </Button>

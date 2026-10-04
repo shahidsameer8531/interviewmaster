@@ -77,7 +77,7 @@ export const LeftHero = () => {
                 className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
             >
                 <Button size="xl" asChild>
-                    <Link href="/products/mock-interviews">
+                    <Link href="/dashboard/interview/new">
                         Start a mock interview
                         <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-0.5" />
                     </Link>

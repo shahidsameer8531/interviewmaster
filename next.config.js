@@ -53,24 +53,20 @@ module.exports = {
     return config;
   },
 
-  // Setup redirects
+  // Temporary redirects from the old product routes to their Prep Room homes.
+  // Non-permanent on purpose so they can change while the app settles.
   async redirects() {
     return [
-      {
-        source: '/old-route',   // Old URL
-        destination: '/new-route',  // New URL
-        permanent: true,  // Permanent redirect
-      },
-      {
-        source: '/another-old-route',   // Old URL
-        destination: '/another-new-route',  // New URL
-        permanent: true,  // Permanent redirect
-      },
-      {
-        source: '/old-route',   // Old URL
-        destination: '/new-route',  // New URL
-        permanent: true,  // Permanent redirect
-      },
+      { source: '/products/mock-interviews/visual-simulation/:path*', destination: '/dashboard/interview/new', permanent: false },
+      { source: '/products/mock-interviews/analyze', destination: '/dashboard/progress', permanent: false },
+      { source: '/products/ai-feedback', destination: '/dashboard/interview/new', permanent: false },
+      { source: '/products/aptitude', destination: '/dashboard/aptitude', permanent: false },
+      { source: '/products/aptitude/:path*', destination: '/dashboard/aptitude', permanent: false },
+      { source: '/products/aptitude-ai', destination: '/dashboard/aptitude', permanent: false },
+      { source: '/products/aptitude-ai/:path*', destination: '/dashboard/aptitude', permanent: false },
+      { source: '/products/resume-builder/features/ai', destination: '/dashboard/resume', permanent: false },
+      { source: '/products/resume-builder/features/ai-resume', destination: '/dashboard/resume', permanent: false },
+      { source: '/services/:service/professional', destination: '/dashboard/coaching', permanent: false },
     ];
   },
 

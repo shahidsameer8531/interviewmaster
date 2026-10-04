@@ -17,7 +17,7 @@ const tools = [
         title: "An interviewer that listens and follows up",
         text: "Behavioral, technical and leadership tracks. Speak your answer, get a transcript, a score and one thing to fix.",
         points: ["Follow-up questions based on what you said", "Scored on clarity, structure and confidence", "Optional camera feedback on posture and eye contact"],
-        href: "/products/mock-interviews",
+        href: "/dashboard/interview/new",
         cta: "Start a mock interview",
         preview: (
             <div className="space-y-3">
@@ -43,7 +43,7 @@ const tools = [
         title: "A resume that passes the screen and reads well",
         text: "Build from a template, paste a job description, and get an ATS match score with line-level suggestions.",
         points: ["ATS keyword match against the job post", "Rewrites weak bullet points with measurable results", "Export to PDF and DOCX"],
-        href: "/products/resume-builder",
+        href: "/dashboard/resume",
         cta: "Build your resume",
         preview: (
             <div className="space-y-3">
@@ -65,7 +65,7 @@ const tools = [
         title: "Timed practice that adapts to you",
         text: "Numerical, logical and verbal questions that get harder as you improve, with worked explanations for every miss.",
         points: ["Adaptive difficulty per topic", "Explanations, not just answer keys", "Timed mode that mirrors real assessments"],
-        href: "/products/aptitude-ai",
+        href: "/dashboard/aptitude",
         cta: "Try a practice set",
         preview: (
             <div className="space-y-3">

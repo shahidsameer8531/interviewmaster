@@ -127,7 +127,7 @@ export const MobileMenu = () => {
             </nav>
 
             <div className="space-y-3 border-t border-border p-4">
-              <Button className="w-full" onClick={() => go('/products/mock-interviews')}>
+              <Button className="w-full" onClick={() => go('/dashboard/interview/new')}>
                 Start a mock interview
               </Button>
               <Button variant="outline" className="w-full" onClick={() => go('/auth')}>
