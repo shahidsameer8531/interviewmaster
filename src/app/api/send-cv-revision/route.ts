@@ -38,7 +38,9 @@ export async function POST(req: Request) {
     });
 
     // In production, you would send emails here
-    if (process.env.NODE_ENV === 'production' && process.env.ADMIN_EMAIL && process.env.EMAIL_PASS) {
+    // Send when the mailbox is configured; otherwise the payload above is the record.
+    const canSend = Boolean(process.env.ADMIN_EMAIL && process.env.EMAIL_PASS);
+    if (canSend) {
       // Configure nodemailer with Gmail
       const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -119,8 +121,7 @@ export async function POST(req: Request) {
       ]);
     }
 
-    return NextResponse.json(
-      { message: 'Your CV revision request has been submitted successfully!' },
+    return NextResponse.json({ ok: true, sent: canSend, message: 'Your CV revision request has been submitted successfully!' },
       { status: 200 }
     );
   } catch (error) {

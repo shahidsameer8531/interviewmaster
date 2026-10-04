@@ -39,7 +39,9 @@ export async function POST(req: Request) {
     });
 
     // Send emails in production and development
-    if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'development') {
+    // Send when the mailbox is configured; otherwise the payload above is the record.
+    const canSend = Boolean(process.env.ADMIN_EMAIL && process.env.EMAIL_PASS);
+    if (canSend) {
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -122,8 +124,7 @@ export async function POST(req: Request) {
       ]);
     }
 
-    return NextResponse.json(
-      { message: 'Your salary negotiation request has been submitted successfully!' },
+    return NextResponse.json({ ok: true, sent: canSend, message: 'Your salary negotiation request has been submitted successfully!' },
       { status: 200 }
     );
   } catch (error) {
