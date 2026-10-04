@@ -136,10 +136,16 @@ class SpeechService {
       this.currentUtterance = utterance;
       onStart?.();
     };
-    utterance.onend = () => {
-      this.currentUtterance = null;
+    let ended = false;
+    const finish = () => {
+      if (ended) return;
+      ended = true;
+      if (this.currentUtterance === utterance) this.currentUtterance = null;
       onEnd?.();
     };
+    utterance.onend = finish;
+    // cancel() and some engines report "interrupted" through onerror, not onend.
+    utterance.onerror = finish;
 
     this.synth.speak(utterance);
   }

@@ -144,12 +144,18 @@ const config: Config = {
                     "0%": { transform: "scale(0.9)", opacity: "0.8" },
                     "100%": { transform: "scale(2.2)", opacity: "0" },
                 },
+                wave: {
+                    "0%, 100%": { transform: "scaleY(0.4)" },
+                    "50%": { transform: "scaleY(1.4)" },
+                },
             },
             animation: {
                 shimmer: "shimmer 2.5s linear infinite",
                 float: "float 6s ease-in-out infinite",
                 marquee: "marquee 40s linear infinite",
                 "pulse-ring": "pulse-ring 1.6s cubic-bezier(0.2, 0.7, 0.4, 1) infinite",
+                wave: "wave 0.9s ease-in-out infinite",
+                "wave-slow": "wave 2.4s ease-in-out infinite",
             },
         },
     },
