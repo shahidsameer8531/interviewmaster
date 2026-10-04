@@ -8,6 +8,9 @@ import { AppSidebar } from "./AppSidebar";
 import { shellVariantFor, type ShellVariant } from "./app-navigation";
 import { useAppUser } from "@/features/app-data/hooks";
 import { SearchProvider } from "./search-context";
+import { GuestImportOffer } from "./GuestImportOffer";
+import { canUseGuestStore } from "@/features/app-data/guest-store";
+import { useEffect, useState } from "react";
 
 /**
  * The Prep Room layout. A wrapping flex row: the sidebar is `flex: 1 1 240px`
@@ -28,6 +31,10 @@ export const AppShell = ({
   const pathname = usePathname();
   const v = variant ?? shellVariantFor(pathname);
   const { isGuest } = useAppUser();
+  // The "keep your history" banner only makes sense when guest history can
+  // actually be stored here and later imported.
+  const [storeWorks, setStoreWorks] = useState(false);
+  useEffect(() => setStoreWorks(canUseGuestStore()), []);
 
   return (
     <SearchProvider shortcut={v === "sidebar"}>
@@ -60,7 +67,8 @@ export const AppShell = ({
             v === "focus" ? "py-4" : "py-6 lg:py-8",
           )}
         >
-          {isGuest && v !== "focus" && (
+          {v !== "focus" && <GuestImportOffer />}
+          {isGuest && storeWorks && v !== "focus" && (
             <p
               role="status"
               className="mx-auto mb-5 flex max-w-6xl flex-wrap items-center justify-between gap-2 rounded-app-control border border-app-line bg-app-sidebar px-4 py-2.5 text-app-small text-app-ink-2"

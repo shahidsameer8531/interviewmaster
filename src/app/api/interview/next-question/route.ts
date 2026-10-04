@@ -15,6 +15,8 @@ const bodySchema = z.object({
   totalQuestions: z.number().int().min(1).max(30),
   jobDescription: z.string().max(6000).optional(),
   focus: z.string().max(120).optional(),
+  /** When set and no question has been asked yet, this exact question opens the round. */
+  openingQuestion: z.string().max(600).optional(),
   previous: z
     .array(z.object({ question: z.string().max(1000), answer: z.string().max(8000) }))
     .max(30)
@@ -52,6 +54,10 @@ export async function POST(req: Request) {
     body = bodySchema.parse(await req.json());
   } catch {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+  }
+
+  if (body.openingQuestion && body.previous.length === 0) {
+    return NextResponse.json({ question: body.openingQuestion, isFollowUp: false });
   }
 
   const last = body.previous[body.previous.length - 1];

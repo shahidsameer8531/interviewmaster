@@ -91,6 +91,31 @@ export function useGuestValue<T>(key: string, fallback: T): T {
   );
 }
 
+/** True when localStorage can be written, so guest history can actually be kept and later imported. */
+export function canUseGuestStore(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const k = `${PREFIX}probe`;
+    window.localStorage.setItem(k, "1");
+    window.localStorage.removeItem(k);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function clearGuestStore() {
+  for (const key of Object.values(GUEST_KEYS)) {
+    try {
+      window.localStorage.removeItem(key);
+    } catch {
+      /* ignore */
+    }
+  }
+  cache.clear();
+  window.dispatchEvent(new CustomEvent(EVENT, { detail: "clear" }));
+}
+
 export function guestId(prefix = "g") {
   return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
 }

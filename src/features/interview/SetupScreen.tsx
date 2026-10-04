@@ -47,7 +47,11 @@ export const SetupScreen = () => {
   const [company, setCompany] = useState("");
   const [length, setLength] = useState<number>(LENGTH_OPTIONS.includes(Number(params.get("length")) as 15) ? Number(params.get("length")) : 30);
   const [style, setStyle] = useState<InterviewerStyle>(isStyle(params.get("style")) ? (params.get("style") as InterviewerStyle) : "neutral");
-  const [options, setOptions] = useState<RoomOptions>({ ...DEFAULT_ROOM_OPTIONS, focus: params.get("focus") ?? undefined });
+  const [options, setOptions] = useState<RoomOptions>({
+    ...DEFAULT_ROOM_OPTIONS,
+    focus: params.get("focus") ?? undefined,
+    openingQuestion: params.get("retry")?.slice(0, 600) || undefined,
+  });
   const [jdOpen, setJdOpen] = useState(false);
   const [jdDraft, setJdDraft] = useState("");
   const [permissions, setPermissions] = useState<Permissions>({ camera: "idle", mic: "idle" });
@@ -248,6 +252,12 @@ export const SetupScreen = () => {
                 </StatusChip>
               )}
               {options.focus && <StatusChip className="mt-3 ml-2">Drilling {options.focus}</StatusChip>}
+              {options.openingQuestion && (
+                <p className="mt-3 text-app-small text-app-ink-2">
+                  <span className="text-app-ink-3">Opens with: </span>
+                  {options.openingQuestion}
+                </p>
+              )}
             </div>
 
             {error && (

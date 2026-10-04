@@ -24,6 +24,16 @@ function openDb(): Promise<IDBDatabase | null> {
 
 const key = (sessionId: string, index: number) => `${sessionId}:${index}`;
 
+/** Whether "Keep the recording" was on for this session, from the room options kept in sessionStorage. */
+export function loadRoomOptionsForReport(sessionId: string): boolean {
+  try {
+    const raw = sessionStorage.getItem(`im.room.${sessionId}`);
+    return raw ? Boolean((JSON.parse(raw) as { keepRecording?: boolean }).keepRecording) : false;
+  } catch {
+    return false;
+  }
+}
+
 export async function saveClip(sessionId: string, index: number, blob: Blob): Promise<boolean> {
   const db = await openDb();
   if (!db) return false;

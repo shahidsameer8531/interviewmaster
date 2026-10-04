@@ -18,6 +18,7 @@ import type * as auth from "../auth.js";
 import type * as coachingRequests from "../coachingRequests.js";
 import type * as emails from "../emails.js";
 import type * as http from "../http.js";
+import type * as importGuestData from "../importGuestData.js";
 import type * as interviewSessions from "../interviewSessions.js";
 import type * as payments from "../payments.js";
 import type * as resumes from "../resumes.js";
@@ -39,6 +40,7 @@ declare const fullApi: ApiFromModules<{
   coachingRequests: typeof coachingRequests;
   emails: typeof emails;
   http: typeof http;
+  importGuestData: typeof importGuestData;
   interviewSessions: typeof interviewSessions;
   payments: typeof payments;
   resumes: typeof resumes;

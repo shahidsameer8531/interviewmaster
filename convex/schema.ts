@@ -35,6 +35,8 @@ export const reportQuestion = v.object({
   landed: v.array(v.string()),
   fix: v.array(v.string()),
   strongerAnswer: v.array(v.string()),
+  /** Verbatim phrases from the answer that landed, for the sky highlights. */
+  highlights: v.optional(v.array(v.string())),
 });
 
 export const sessionReport = v.object({
@@ -43,6 +45,8 @@ export const sessionReport = v.object({
   dimensions: v.array(reportDimension),
   biggestWin: v.string(),
   biggestFix: v.string(),
+  /** One sentence on where the candidate stands against the bar. */
+  summary: v.optional(v.string()),
   questions: v.array(reportQuestion),
   generatedAt: v.number(),
 });

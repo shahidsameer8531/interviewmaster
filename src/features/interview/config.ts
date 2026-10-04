@@ -34,6 +34,8 @@ export type RoomOptions = {
   jobDescription?: string;
   resumeId?: string;
   focus?: string;
+  /** Exact first question, used by "Retry this question" from a report. */
+  openingQuestion?: string;
 };
 
 export const DEFAULT_ROOM_OPTIONS: RoomOptions = {

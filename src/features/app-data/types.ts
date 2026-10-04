@@ -58,6 +58,8 @@ export type ReportQuestion = {
   landed: string[];
   fix: string[];
   strongerAnswer: string[];
+  /** Verbatim phrases from the answer that landed. */
+  highlights?: string[];
 };
 
 export type SessionReport = {
@@ -66,6 +68,8 @@ export type SessionReport = {
   dimensions: ReportDimension[];
   biggestWin: string;
   biggestFix: string;
+  /** One sentence on where the candidate stands against the bar. */
+  summary?: string;
   questions: ReportQuestion[];
   generatedAt: number;
 };

@@ -194,6 +194,7 @@ export const RoomScreen = ({ sessionId }: { sessionId: string }) => {
             totalQuestions: total,
             jobDescription: options?.jobDescription,
             focus: options?.focus,
+            openingQuestion: previous.length === 0 ? options?.openingQuestion : undefined,
             previous,
           }),
         });
